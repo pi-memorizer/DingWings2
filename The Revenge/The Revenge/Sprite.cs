@@ -114,7 +114,7 @@ namespace GameSystem
     //holds a flippable, sometimes palette switching sprite
     class Sprite
     {
-        Image sprite;
+        public Image sprite;
         Image flipped = null;
         public int xOffset = 0, yOffset = 0;
         public static ImageAttributes[] transparency;

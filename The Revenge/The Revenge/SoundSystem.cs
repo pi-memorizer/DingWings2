@@ -14,10 +14,32 @@ namespace GameSystem
     {
         static Dictionary<string, MediaPlayer> tracks = new Dictionary<string, MediaPlayer>();
 
-        public static void load(string filename)
+        public static void stopAll()
+        {
+            foreach(MediaPlayer m in tracks.Values)
+            {
+                m.Stop();
+            }
+        }
+
+        public static void setBackgroundMusic(string filename)
+        {
+            if(tracks.ContainsKey("_main"))
+            {
+                if (tracks["_main"] == tracks[filename]) return;
+                tracks["_main"].Stop();
+                tracks["_main"] = tracks[filename];
+            } else
+            {
+                tracks.Add("_main", tracks[filename]);
+            }
+            tracks["_main"].Play();
+        }
+
+        public static void load(string filename, string extension)
         {
             MediaPlayer m = new MediaPlayer();
-            m.Open(new Uri("sound/" + filename + ".wav", UriKind.Relative));
+            m.Open(new Uri("sound/" + filename + "." + extension, UriKind.Relative));
             tracks.Add(filename, m);
         }
 

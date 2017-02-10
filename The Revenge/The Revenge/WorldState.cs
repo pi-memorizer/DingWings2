@@ -37,9 +37,28 @@ namespace GameSystem
                 w.load(null);
             }
 
-            SoundSystem.load("WANO");
+            SoundSystem.load("WANO","mp3");
             SoundSystem.setLoop("WANO");
-            SoundSystem.play("WANO");
+            SoundSystem.setBackgroundMusic("WANO");
+            SoundSystem.load("8", "mp3");
+            SoundSystem.setLoop("8");
+
+            Player.maleSheet = new Bitmap("male.png");
+            Player.femaleSheet = new Bitmap("female.png");
+            Player.male = new Sprite[12];
+            for (int i = 0; i < 12; i++)
+            {
+                Player.male[i] = new Sprite(Player.maleSheet, (i % 4) * 16, (i / 4) * 24, 16, 24, 0, -8);
+                if (i > 3)
+                    Player.male[i].yOffset = -9;
+            }
+            Player.female = new Sprite[12];
+            for (int i = 0; i < 12; i++)
+            {
+                Player.female[i] = new Sprite(Player.femaleSheet, (i % 4) * 16, (i / 4) * 24, 16, 24, 0, -8);
+                if (i > 3)
+                    Player.female[i].yOffset = -9;
+            }
         }
 
         //loads blocks from a sprite sheet

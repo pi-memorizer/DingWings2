@@ -26,33 +26,14 @@ namespace GameSystem
         public int wait = 0; //how many frames the player has waited since turning
         public int dir = 3; //the direction the player is facing, 0=right,1=up,2=left,3=down
         public bool isMale = true;
-        static Sprite[] male, female; //sprites for multiple player types, will likely be changed
-        static Bitmap maleSheet = new Bitmap("male.png"), femaleSheet = new Bitmap("female.png"); //the spritesheets for the player
+        public static Sprite[] male, female; //sprites for multiple player types, will likely be changed
+        public static Bitmap maleSheet, femaleSheet; //the spritesheets for the player
 
         public World world
         {
             get
             {
                 return WorldState.worlds[worldID];
-            }
-        }
-
-        static Player()
-        {
-            //initializes the spritesheets
-            male = new Sprite[12];
-            for (int i = 0; i < 12; i++)
-            {
-                male[i] = new Sprite(maleSheet, (i % 4) * 16, (i / 4) * 24, 16, 24, 0, -8);
-                if (i > 3)
-                    male[i].yOffset = -9;
-            }
-            female = new Sprite[12];
-            for (int i = 0; i < 12; i++)
-            {
-                female[i] = new Sprite(femaleSheet, (i % 4) * 16, (i / 4) * 24, 16, 24, 0, -8);
-                if (i > 3)
-                    female[i].yOffset = -9;
             }
         }
 
