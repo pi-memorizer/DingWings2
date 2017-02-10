@@ -36,6 +36,10 @@ namespace GameSystem
             {
                 w.load(null);
             }
+
+            SoundSystem.load("WANO");
+            SoundSystem.setLoop("WANO");
+            SoundSystem.play("WANO");
         }
 
         //loads blocks from a sprite sheet
@@ -199,11 +203,9 @@ namespace GameSystem
                 if (b == Block.Coral)
                     flag = false;
             }
-            Entity e = p.world.entityAt(x, y);
-            if(e!=null)
+            foreach(Entity e in p.world.entities)
             {
-                if (!e.getCanStepOn(p))
-                    return false;
+                if (e.collides(p.x, p.y, p.xOffset, p.yOffset, 16, 16)) return false;
             }
             if (b == 0)
                 return true;

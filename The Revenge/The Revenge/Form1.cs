@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using GameSystem;
 
 namespace The_Revenge
@@ -44,6 +45,32 @@ namespace The_Revenge
             config.Add("p2B", 'O');
             config.Add("p2Start", 'M');
             config.Add("p2Select", 'H');
+
+            try
+            {
+                using (StreamReader sr = new StreamReader("config.txt"))
+                {
+                    string line = sr.ReadLine();
+                    while(line!=null)
+                    {
+                        string[] s = line.Split('=');
+                        if(s.Length==2)
+                        {
+                            if(config.ContainsKey(s[0]))
+                            {
+                                config[s[0]] = s[1][0];
+                            } else
+                            {
+                                config.Add(s[0], s[1][0]);
+                            }
+                        }
+                        line = sr.ReadLine();
+                    }
+                }
+            } catch(IOException)
+            {
+                Console.WriteLine("There was an error reading the config file, so default settings will be used.");
+            }
         }
 
         //where the scaling magic happens, and what is drawn to the form directly
@@ -95,6 +122,18 @@ namespace The_Revenge
                 {
                     int newWidth = (int)(height / 144f * 160f);
                     g.DrawImage(player.offscreenImg, (width - newWidth) / 2, 0, newWidth, height);
+                }
+            }
+            else if(Game.players.Length==0)
+            {
+                g.Clear(Color.White);
+                Sprites.drawString(g, "Key bindings: ",1,1);
+                int i = 3;
+                foreach (string s in config.Keys)
+                {
+                    Sprites.drawString(g,s + ": ",1,i);
+                    Sprites.drawString(g, ((char)config[s]).ToString(), 15, i);
+                    i++;
                 }
             }
             else

@@ -11,7 +11,7 @@ namespace GameSystem
     //anything that moves or changes
     abstract class Entity
     {
-        public int x, y; //coordinates
+        public int x, y, xOffset, yOffset; //coordinates
         public World world; //the world it is in
         protected bool remove = false; //set true to take it out of the system
 
@@ -29,9 +29,54 @@ namespace GameSystem
 
         public abstract Sprite getSprite();
         public abstract void tick(); //called every frame (60 fps)
-        public abstract bool getCanStepOn(Player p); //if the player can step on it or if it impedes motion
+        public virtual bool collides(int x, int y, int xOffset, int yOffset, int width, int height)
+        {
+            return x == this.x && y == this.y;
+        }
         public abstract void onStepOn(Player p); //called when the player steps on it (i.e. land mines)
         public virtual bool needsRemoval() { return remove; } //called to check if the entity needs removal
         public abstract bool interact(Player p); //called if the player selects the entity, true if interaction was made
+    }
+
+    class Particle : Entity
+    {
+        Sprite[] sprites;
+        int lifetime;
+        int frames = 0;
+
+        public Particle(World world, int x, int y, Sprite[] sprites, int lifetime) : base(world,x,y)
+        {
+            this.sprites = sprites;
+            this.lifetime = lifetime;
+        }
+
+        public override bool collides(int x, int y, int xOffset, int yOffset, int width, int height)
+        {
+            return false;
+        }
+
+        public override Sprite getSprite()
+        {
+            return sprites[frames * sprites.Length / lifetime];
+        }
+
+        public override bool interact(Player p)
+        {
+            return false;
+        }
+
+        public override bool needsRemoval()
+        {
+            return frames >= lifetime;
+        }
+
+        public override void onStepOn(Player p)
+        {
+        }
+
+        public override void tick()
+        {
+            frames++;
+        }
     }
 }

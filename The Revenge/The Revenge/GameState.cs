@@ -34,7 +34,7 @@ namespace GameSystem
 
     class StartState : MenuState
     {
-        static Sprite splashScreen = new Sprite("splashscreen.png");
+        public static Sprite splashScreen = new Sprite("splashscreen.png");
 
         public StartState(Player player) : base(player)
         {

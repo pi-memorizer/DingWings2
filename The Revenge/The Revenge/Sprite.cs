@@ -12,7 +12,7 @@ namespace GameSystem
     //used for drawing text to the screen
     class Sprites
     {
-        private static Bitmap ascii = new Bitmap(new Bitmap("ascii.png"));
+        //private static Bitmap ascii = new Bitmap(new Bitmap("ascii.png"));
         private static Bitmap asciiSmall = new Bitmap(new Bitmap("ascii_small.png"));
         static Bitmap font = new Bitmap(new Bitmap("font.png"));
 
@@ -144,8 +144,8 @@ namespace GameSystem
         public Sprite(Bitmap spritesheet, int left, int top, int width, int height) : this()
         {
             Rectangle rect = new Rectangle(left, top, width, height);
-            sprite = spritesheet.Clone(rect, spritesheet.PixelFormat);
-            sprite = new Bitmap(sprite);
+            sprite = new Bitmap(spritesheet.Clone(rect, spritesheet.PixelFormat));
+            //sprite = new Bitmap(sprite);
         }
 
         public Sprite(string file, int x, int y) : this()

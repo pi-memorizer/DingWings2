@@ -25,7 +25,7 @@ namespace GameSystem
         public int worldID = 0; //the id of the world that the player is in
         public int wait = 0; //how many frames the player has waited since turning
         public int dir = 3; //the direction the player is facing, 0=right,1=up,2=left,3=down
-        public bool isMale = false;
+        public bool isMale = true;
         static Sprite[] male, female; //sprites for multiple player types, will likely be changed
         static Bitmap maleSheet = new Bitmap("male.png"), femaleSheet = new Bitmap("female.png"); //the spritesheets for the player
 
