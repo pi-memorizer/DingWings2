@@ -10,14 +10,15 @@ namespace GameSystem
     //enumerator for Blocks, mapped to integers and here for us to reference in code
     public enum Block : ushort
     {
-        Air = 0, CreamWall, DuctTape, HammerHead = 4, LabFloor,
+        Air = 0, CreamWall, DuctTape, RabbitBed, HammerHead = 4, LabFloor, Valve,
         DoorRight = 16, BoringCarpet, KeyCard, Wrench, HammerHandle,
         DoorLeft = 32, DeskSingle, DeskLeft, DeskRight,
         DoorDown = 48, TableTopLeft, TableTopMiddle, TableTopRight, TableTopExtendsRight,
         DoorUp = 64, TableLeftMiddle, TableMiddle, TableRightMiddle, TableMiddleColumn, TableTopColumn,
         DownStairs = 80, TableBottomLeft, TableBottomMiddle, TableBottomRight, TableBottomExtendsRight, TableBottomColumn,
         UpStairs = 96, TableLeftRow, TableMiddleRow, TableRightRow, TableSingle,
-        ChairLeft = 256, ChairDown, ChairRight, ChairUp, ComputerOn, ComputerOff, ComputerDesk,
+        ChairLeft = 256, ChairDown, ChairRight, ChairUp, ComputerOn, ComputerOff, ComputerDesk, ComputerBack, BigScience, LittleScience,
+        PottedPlant = 534,
         Floor1Wall1 = 512, Floor1Wall2, Floor1Wall3, Floor1Wall4, Floor1Wall5, Floor1Wall6, Floor1Wall7, Floor1Wall8, Floor1Wall9, Floor1Wall10, Floor1Wall11, Floor1Wall12,
     }
 

@@ -30,7 +30,7 @@ namespace The_Revenge
         private static string[] keyKeys =
         {
             "p1Up","p1Down","p1Left","p1Right","p1A","p1B","p1Start","p1Select",
-            /*"p2Up","p2Down","p2Left","p2Right","p2A","p2B","p2Start","p2Select"*/
+            "p2Up","p2Down","p2Left","p2Right","p2A","p2B","p2Start","p2Select"
         };
 
         public static void setKey(int key, bool value)

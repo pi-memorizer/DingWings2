@@ -75,6 +75,9 @@ namespace GameSystem
         {
             worlds = new Dictionary<int, World>();
             worlds.Add(0, new Map0(0, 32, 32));
+            worlds.Add(1, new Map1(1, 32, 32));
+            worlds.Add(2, new Map1(2, 32, 32));
+            worlds.Add(3, new Map1(3, 32, 32));
             foreach (World w in worlds.Values)
             {
                 w.load(null);
@@ -236,7 +239,7 @@ namespace GameSystem
                     {
                         int block = p.world.getBlockAt(x, y);
                         if (block == 0) {
-                            if (!p.world.isInside(x, y)&&y>0) continue;
+                            if (!p.world.isInside(x, y)||y==0) continue;
                             if(p.world.getTileAt(x,y)!=0&&waterPixel<16&&waterPixel!=0)
                             {
                                 //TODO draw various water levels

@@ -47,4 +47,26 @@ namespace GameSystem
             
         }
     }
+
+    class Map1 : StaticWorld
+    {
+        public Map1(int id, int width, int height) : base(id, width, height)
+        {
+            init();
+        }
+
+        public Map1()
+        {
+            init();
+        }
+
+        void init()
+        {
+        }
+
+        public override void tick(Player p)
+        {
+
+        }
+    }
 }

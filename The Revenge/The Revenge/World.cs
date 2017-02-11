@@ -61,7 +61,7 @@ namespace GameSystem
 
     class StaticWorld : World
     {
-        public int id = 1;
+        public int id = 0;
         public int width = -1, height = -1;
 
         ushort[,] blocks, tiles;

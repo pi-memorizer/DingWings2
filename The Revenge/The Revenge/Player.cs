@@ -59,7 +59,7 @@ namespace GameSystem
             } else
             {
                 int worldId = Convert.ToInt32(Game.args[0]);
-                World s = WorldState.worlds[worldID];
+                World s = WorldState.worlds[worldId];
                 if(Game.args.Length==3)
                 {
                     int x = Convert.ToInt32(Game.args[1]);
@@ -69,7 +69,7 @@ namespace GameSystem
                 }
                 s.load(null);
                 s.editing = true;
-                state = new WorldEditor(this, worldID);
+                state = new WorldEditor(this, worldId);
             }
         }
 
