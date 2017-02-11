@@ -14,7 +14,25 @@ namespace GameSystem
         public static Random rand = new Random(); //global random
         public static long frames = 0; //what frame the game is in, useful for animated sprites
         public static string[] args;
-        static bool waterRising = false;
+        static bool waterRising = true;
+
+        static Game()
+        {
+            SoundSystem.load("beige", "wav");
+            SoundSystem.setLoop("beige");
+            SoundSystem.load("emergency", "wav");
+            SoundSystem.setLoop("emergency");
+            SoundSystem.load("emergency2", "wav");
+            SoundSystem.setLoop("emergency2");
+            SoundSystem.load("ohShiitakeMushrooms", "wav");
+            SoundSystem.setLoop("ohShiitakeMushrooms");
+            SoundSystem.load("creepyMusic", "wav");
+            SoundSystem.setLoop("creepyMusic");
+            SoundSystem.load("dracula", "wav");
+            SoundSystem.setLoop("dracula");
+            SoundSystem.load("main", "wav");
+            SoundSystem.setLoop("main");
+        }
 
         public static Player getPlayer(int id)
         {
@@ -49,40 +67,21 @@ namespace GameSystem
             players = newPlayers;
         }
 
+        public static void lose(string [] reasoning)
+        {
+            WorldState.worldinit();
+            for(int i = 0; i < players.Length; i++)
+            {
+                players[i] = new Player(i+1);
+                players[i].setState(new DeathState(players[i], reasoning[i%reasoning.Length]));
+            }
+            waterRising = false;
+        }
+
         //called every frame
         public static void run()
         {
-            Player[] p = players; //because lazy
-            if (waterRising)
-            {
-                if (WorldState.drainFrames == 0)
-                {
-                    WorldState.waterLevel--;
-                    if (WorldState.waterLevel == 0)
-                    {
-                        //TODO do game lose
-                        WorldState.waterLevel = 2 * WorldState.WATER_SPEED;
-                    }
-                    else if (WorldState.waterLevel % WorldState.WATER_SPEED == 0)
-                    {
-                        int level = WorldState.waterLevel / WorldState.WATER_SPEED;
-                        WorldState.pipeUsesLeft[level]--;
-                        if (WorldState.pipeUsesLeft[level] == 0)
-                        {
-                            //TODO do game lose
-                        }
-                    }
-                }
-                else
-                {
-                    WorldState.waterLevel--;
-                    WorldState.drainFrames--;
-                }
-            } else
-            {
-                for (int i = 0; i < p.Length; i++)
-                    if (p[i].level == 1) waterRising = true;
-            }
+            Player[] p = players; //because laz
             for (int i = 0; i < p.Length; i++)
             {
                 if(p[i].getState() is WorldState)
@@ -106,6 +105,37 @@ namespace GameSystem
             }
             if (canTick)
             {
+                if (waterRising)
+                {
+                    if (WorldState.drainFrames == 0)
+                    {
+                        WorldState.waterLevel--;
+                        if (WorldState.waterLevel == 0)
+                        {
+                            lose(new string[] { "Inundation complete. Might want to stop that next time." });
+                            WorldState.waterLevel = 2 * WorldState.WATER_SPEED;
+                        }
+                        else if (WorldState.waterLevel % WorldState.WATER_SPEED == 0)
+                        {
+                            int level = WorldState.waterLevel / WorldState.WATER_SPEED;
+                            WorldState.pipeUsesLeft[level]--;
+                            if (WorldState.pipeUsesLeft[level] == 0)
+                            {
+                                lose(new string[] { "There was no hope for floor " + (level + 1) + "'s pipe any longer." });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        WorldState.waterLevel--;
+                        WorldState.drainFrames--;
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < p.Length; i++)
+                        if (p[i].level == 1) waterRising = true;
+                }
                 frames++;
                 List<World> tickedWorlds = new List<World>(); //worlds in this list have already ticked, needed so that they don't double up
                 for (int i = 0; i < p.Length; i++)

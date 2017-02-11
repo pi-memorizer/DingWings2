@@ -20,15 +20,26 @@ namespace GameSystem
 
         void init()
         {
-            entities.Add(new MessageEntity(WorldState.tileSprites[(int)Block.BallCactus], "Hello there! I am cactus! :)", this, 0, 0));
-            entities.Add(new Pushable(WorldState.tileSprites[(int)Block.BasicDoor], this, 6, 6));
-            entities.Add(new EventEntity(WorldState.tileSprites[(int)Block.DeadTree], "nope", nope, this, 0, 5));
+            entities.Add(new WorldItem(WorldState.tileSprites[(int)Block.DuctTape], Player.Item.DuctTape, "Duct Tape", this, 15, 14));
+            entities.Add(new WorldItem(WorldState.tileSprites[(int)Block.KeyCard], Player.Item.KeyCard, "Keycard", this, 27, 1));
+            entities.Add(new WorldItem(WorldState.tileSprites[(int)Block.Wrench], Player.Item.Wrench, "Wrench", this, 0, 30));
+            entities.Add(new EventEntity(WorldState.tileSprites[0], "", door, this, 12, 7));
+            entities.Add(new EventEntity(WorldState.tileSprites[0], "", door, this, 12, 8));
         }
 
-        void nope(Player p)
+        void door(Player p, Entity e)
         {
-            p.x = 16;
-            p.y = 16;
+            if(p.items[(int)Player.Item.KeyCard])
+            {
+                p.world.editing = true;
+                p.world.setBlockAt(e.x, e.y, 0);
+                p.world.editing = false;
+                e.forceRemove();
+                p.pushState(new TextBox(p.getState(), p, "The keycard opened the door!"));
+            } else
+            {
+                p.pushState(new TextBox(p.getState(), p, "This door is locked."));
+            }
         }
 
         public override void tick(Player p)

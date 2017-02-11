@@ -21,7 +21,7 @@ namespace GameSystem
         public int id; //the player's id (1,2,etc)
         private GameState state; //the current state
         private Stack<GameState> stateStack = new Stack<GameState>(); //the stack of states, for state layering
-        public int x = 16, y = 16, xOffset = 0, yOffset = 0; //position values
+        public int x = 15, y = 31, xOffset = 0, yOffset = 0; //position values
         public int worldID = 0; //the id of the world that the player is in
         public int wait = 0; //how many frames the player has waited since turning
         public int dir = 3; //the direction the player is facing, 0=right,1=up,2=left,3=down
@@ -36,6 +36,7 @@ namespace GameSystem
 
         public enum Item
         {
+            DuctTape, KeyCard, Wrench
         };
 
         public World world
@@ -93,12 +94,6 @@ namespace GameSystem
             stateStack.Clear();
             state = s;
         }
-        
-        //h3h3, probably won't use but it's here
-        public bool canGoUnderwater()
-        {
-            return true;
-        }
 
         public GameState getState()
         {
@@ -139,7 +134,7 @@ namespace GameSystem
         {
             if (tile)
             {
-                world.setTileAt(x + _x, y + _y, (int)Block.Cloud);
+                world.setTileAt(x + _x, y + _y, (int)Block.Air);
             }
             else
             {

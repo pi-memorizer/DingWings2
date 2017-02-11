@@ -14,47 +14,33 @@ namespace GameSystem
         public static Dictionary<int, World> worlds = null;
         public static int numWorlds = 1;
         public static string worldName = "";
-        public static int WATER_SPEED = 200;
+        public static int WATER_SPEED = 400;
         public static int waterLevel = 2 * WATER_SPEED;
         const int WAIT = 3; //amount of frames to wait before moving after changing direction
         public int WALK_SPEED = 2; //how many pixels the player moves per frame
+        static Sprite[] waterSprites, waterLevelSprites;
 
-        public static int drainFrames = 0; 
+        public static int drainFrames = 0;
 
-        public static int[] pipeUsesLeft =
-        {
-            3,
-            2,
-            2
-        };
+        public static int[] pipeUsesLeft;
 
         public WorldState(Player player) : base(player)
         {
+            if (player.id == 1) SoundSystem.setBackgroundMusic("beige");
         }
 
         static WorldState()
         {
             tileSprites = new Sprite[NUM_TILES];
             //loads the tiles from images into their rightful places
-            loadSegment("tileset1.png", 0, (int)Block.Coral+1, 16, 16, 0, 0);
-            loadSegment("tileset2.png", 256, 9, 16, 24, 0, -8);
-            loadSegment("tileset3.png", 512, 6, 16, 16, 0, 0);
+            loadSegment("tileset1.png", 0, 256, 16, 16, 0, 0);
+            loadSegment("tileset2.png", 256, 256, 16, 24, 0, -8);
+            loadSegment("tileset3.png", 512, 80, 16, 24, 0, -8);
 
             //if we add more worlds make sure to add them here
-            worlds = new Dictionary<int, World>();
-            worlds.Add(0,new Map0(0,16,16));
-            foreach(World w in worlds.Values)
-            {
-                w.load(null);
-            }
+            worldinit();
 
-            SoundSystem.load("WANO","mp3");
-            SoundSystem.setLoop("WANO");
-            SoundSystem.setBackgroundMusic("WANO");
-            SoundSystem.load("8", "mp3");
-            SoundSystem.setLoop("8");
-
-            Player.maleSheet = new Bitmap("male.png");
+            Player.maleSheet = new Bitmap("guy.png");
             Player.femaleSheet = new Bitmap("female.png");
             Player.male = new Sprite[12];
             for (int i = 0; i < 12; i++)
@@ -70,6 +56,34 @@ namespace GameSystem
                 if (i > 3)
                     Player.female[i].yOffset = -9;
             }
+
+            Bitmap water = new Bitmap("water.png");
+            waterSprites = new Sprite[16];
+            for(int i = 0; i < 16; i++)
+            {
+                waterSprites[i] = new Sprite(water, 0, 16 - i, 16, 16 + i);
+                waterSprites[i].yOffset = -i;
+            }
+            waterLevelSprites = new Sprite[16];
+            for(int i = 0; i < 16; i++)
+            {
+                waterLevelSprites[i] = new Sprite(water, 0, 16-i, 16, i+1, 0, 15 - i);
+            }
+        }
+
+        public static void worldinit()
+        {
+            worlds = new Dictionary<int, World>();
+            worlds.Add(0, new Map0(0, 32, 32));
+            foreach (World w in worlds.Values)
+            {
+                w.load(null);
+            }
+            pipeUsesLeft = new int[] {
+                3,
+                2,
+                2
+            };
         }
 
         //loads blocks from a sprite sheet
@@ -105,7 +119,7 @@ namespace GameSystem
             }
             else if (waterLevel / WATER_SPEED == p.level)
             {
-                waterPixel = (16 * (waterLevel % WATER_SPEED) / WATER_SPEED);
+                waterPixel = 16-(16 * (waterLevel % WATER_SPEED) / WATER_SPEED);
             }
             return waterPixel;
         }
@@ -180,7 +194,18 @@ namespace GameSystem
                 {
                     for (int y = p.y - 5; y <= p.y + 5; y++)
                     {
-                        layers[y + 7 - p.y].Add(new DrawUnit(tileSprites[p.world.getTileAt(x, y)], 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
+                        Sprite s;
+                        int layer = y - p.y + 7;
+                        if (waterPixel > 0 && waterPixel < 16&&p.world.isInside(x,y))
+                        {
+                            s = waterSprites[0];
+                            layer--;
+                        }
+                        else
+                        {
+                            s = tileSprites[p.world.getTileAt(x, y)];
+                        }
+                        layers[layer].Add(new DrawUnit(s, 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
                     }
                 }
                 for (int i = 0; i < Game.players.Length; i++)
@@ -191,6 +216,10 @@ namespace GameSystem
                         int layer = p2.y - p.y + 9;
                         if (layer >= 0 && layer < layers.Length)
                             layers[layer].Add(new DrawUnit(p2.getSprite(), 72 + p2.x * 16 + p2.xOffset - p.x * 16 - p.xOffset, 64 + p2.y * 16 + p2.yOffset - p.y * 16 - p.yOffset));
+                        if(waterPixel>0&&waterPixel<16)
+                        {
+                            layers[layer].Add(new DrawUnit(waterLevelSprites[waterPixel], 72 + p2.x * 16 + p2.xOffset - p.x * 16 - p.xOffset, 64 + p2.y * 16 + p2.yOffset - p.y * 16 - p.yOffset));
+                        }
                     }
                 }
                 List<Entity> entities = p.world.entities;
@@ -207,10 +236,11 @@ namespace GameSystem
                     {
                         int block = p.world.getBlockAt(x, y);
                         if (block == 0) {
+                            if (!p.world.isInside(x, y)&&y>0) continue;
                             if(p.world.getTileAt(x,y)!=0&&waterPixel<16&&waterPixel!=0)
                             {
                                 //TODO draw various water levels
-                                Sprite s = tileSprites[(int)Block.Water];
+                                Sprite s = waterSprites[(waterPixel)];
                                 if (s != null) layers[y - p.y + 8].Add(new DrawUnit(s, 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
                             }
                         }
@@ -218,6 +248,24 @@ namespace GameSystem
                         {
                             Sprite s = tileSprites[block];
                             if (s != null) layers[y - p.y + 8].Add(new DrawUnit(s, 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
+                            if (waterPixel > 0 && waterPixel < 16)
+                            {
+                                if(BlockData.canHaveWater(block))
+                                {
+                                    layers[y - p.y + 8].Add(new DrawUnit(waterLevelSprites[waterPixel], 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
+                                }
+                                /*
+                                int block2 = p.world.getBlockAt(x, y + 1);
+                                if (block < 512)
+                                {
+                                    int block3 = p.world.getBlockAt(x, y - 1);
+                                    if (block2 == 0&&(block3==0||block3>=512))
+                                        layers[y - p.y + 9].Add(new DrawUnit(waterLevelSprites[waterPixel], 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
+                                } else if(block2<512)
+                                {
+                                    layers[y - p.y + 9].Add(new DrawUnit(waterLevelSprites[waterPixel], 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
+                                }*/
+                            }
                         }
                     }
                 }
@@ -227,19 +275,13 @@ namespace GameSystem
                 foreach(DrawUnit d in layers[i])
                 {
                     Sprite s = d.sprite;
-                    if(s==tileSprites[(int)Block.Water])
-                    {
-                        s.yOffset = waterPixel;
-                        s.draw(g, d.x, d.y);
-                        s.yOffset = 0;
-                    } else
                     s.draw(g, d.x, d.y);
                 }
             }
             if(waterPixel==16)
             {
                 SolidBrush sb = new SolidBrush(Color.FromArgb(128, Color.DarkBlue));
-                g.FillRectangle(sb, 0, 0, 160, 144);
+                g.FillRectangle(sb, 0, 0, 200, 144);
             }
         }
 
@@ -248,15 +290,8 @@ namespace GameSystem
         {
             Block t = (Block)p.world.getTileAt(x, y);
             Block b = (Block)p.world.getBlockAt(x, y);
+            if (!p.world.isInside(x, y)) return false;
             bool flag = false;
-            if (t == Block.Water || t == Block.DeepWater)
-            {
-                if (!p.canGoUnderwater())
-                    return false;
-                else flag = true;
-                if (b == Block.Coral)
-                    flag = false;
-            }
             foreach(Entity e in p.world.entities)
             {
                 if (e.collides(x, y, p.xOffset, p.yOffset, 16, 16)) return false;

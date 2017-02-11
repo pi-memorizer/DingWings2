@@ -32,6 +32,8 @@ namespace GameSystem
         {
 
         }
+
+        public abstract bool isInside(int x, int y);
     }
 
     public struct Coord
@@ -217,6 +219,11 @@ namespace GameSystem
                     Console.WriteLine(ex.ToString());
                 }
             }
+        }
+
+        public override bool isInside(int x, int y)
+        {
+            return x >= 0 && y >= 0 && x < width && y < height;
         }
     }
 }

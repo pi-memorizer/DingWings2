@@ -36,6 +36,10 @@ namespace GameSystem
         public abstract void onStepOn(Player p); //called when the player steps on it (i.e. land mines)
         public virtual bool needsRemoval() { return remove; } //called to check if the entity needs removal
         public abstract bool interact(Player p); //called if the player selects the entity, true if interaction was made
+        public void forceRemove()
+        {
+            remove = true;
+        }
     }
 
     class Particle : Entity
@@ -145,7 +149,7 @@ namespace GameSystem
         }
     }
 
-    delegate void GameEvent(Player p);
+    delegate void GameEvent(Player p, Entity e);
 
     class WorldItem : Entity
     {
@@ -228,7 +232,7 @@ namespace GameSystem
 
         public override bool interact(Player p)
         {
-            e(p);
+            e(p,this);
             if(message!="")
             {
                 p.pushState(new TextBox(p.getState(), p, message));

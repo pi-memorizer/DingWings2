@@ -38,6 +38,8 @@ namespace GameSystem
 
         public StartState(Player player) : base(player)
         {
+            if (p.id == 1)
+                SoundSystem.setBackgroundMusic("main");
         }
 
         public override void draw(Graphics g, Player p)

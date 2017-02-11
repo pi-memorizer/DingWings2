@@ -59,14 +59,5 @@ namespace The_Revenge.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream penguin {
-            get {
-                return ResourceManager.GetStream("penguin", resourceCulture);
-            }
-        }
     }
 }

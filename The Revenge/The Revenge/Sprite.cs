@@ -163,6 +163,22 @@ namespace GameSystem
             yOffset = y;
         }
 
+        public int width
+        {
+            get
+            {
+                return sprite.Width;
+            }
+        }
+
+        public int height
+        {
+            get
+            {
+                return sprite.Height;
+            }
+        }
+
         public void draw(Graphics g, int x, int y)
         {
             g.DrawImage(sprite, x + xOffset, y + yOffset);

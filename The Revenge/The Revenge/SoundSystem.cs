@@ -54,9 +54,9 @@ namespace GameSystem
             MediaPlayer player = sender as MediaPlayer;
             if (player == null)
                 return;
-
             player.Position = new TimeSpan(0);
-            player.Play();
+            //player.Pause();
+            //player.Play();
         }
 
         public static void play(string filename)
