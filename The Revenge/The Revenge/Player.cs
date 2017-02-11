@@ -29,6 +29,15 @@ namespace GameSystem
         public static Sprite[] male, female; //sprites for multiple player types, will likely be changed
         public static Bitmap maleSheet, femaleSheet; //the spritesheets for the player
 
+        public static int NUM_ITEMS = 64;
+        public bool[] items = new bool[NUM_ITEMS];
+
+        public int level = 0;
+
+        public enum Item
+        {
+        };
+
         public World world
         {
             get

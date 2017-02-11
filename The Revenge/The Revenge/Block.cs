@@ -15,6 +15,7 @@ namespace GameSystem
         FlyAlgaric = 16, Portabella, Puffball, InkCap, HenOfTheWoods, Morel, Enoki, Truffel,
         Daisy, Tulip, Lily, Violet, Rose, Heather, Petunia, Orchid,
         BallCactus, CowSkull, Coral,
+        UpStairs, DownStairs,
         Tree = 256, Spruce, DeadTree, Larch, Cactus, Sunflower, Kelp, Mangrove,
         Cloud = 512, StreetCloud, BasicSiding, BasicDoor, BasicRoofing, BasicWindow
     }

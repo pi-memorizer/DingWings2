@@ -14,8 +14,19 @@ namespace GameSystem
         public static Dictionary<int, World> worlds = null;
         public static int numWorlds = 1;
         public static string worldName = "";
+        public static int WATER_SPEED = 200;
+        public static int waterLevel = 2 * WATER_SPEED;
         const int WAIT = 3; //amount of frames to wait before moving after changing direction
-        const int WALK_SPEED = 2; //how many pixels the player moves per frame
+        public int WALK_SPEED = 2; //how many pixels the player moves per frame
+
+        public static int drainFrames = 0; 
+
+        public static int[] pipeUsesLeft =
+        {
+            3,
+            2,
+            2
+        };
 
         public WorldState(Player player) : base(player)
         {
@@ -31,7 +42,7 @@ namespace GameSystem
 
             //if we add more worlds make sure to add them here
             worlds = new Dictionary<int, World>();
-            worlds.Add(0,new StaticWorld(0,16,16));
+            worlds.Add(0,new Map0(0,16,16));
             foreach(World w in worlds.Values)
             {
                 w.load(null);
@@ -85,19 +96,33 @@ namespace GameSystem
             }
         }
 
+        public int getWaterPixel()
+        {
+            int waterPixel = 0;
+            if (waterLevel / WATER_SPEED < p.level)
+            {
+                waterPixel = 16;
+            }
+            else if (waterLevel / WATER_SPEED == p.level)
+            {
+                waterPixel = (16 * (waterLevel % WATER_SPEED) / WATER_SPEED);
+            }
+            return waterPixel;
+        }
+
         //most if this is kind of complicated, and shouldn't need to be modified.
         //code exists already for if we want underwater features for some reason.
         public override void draw(Graphics g, Player p)
         {
             List<DrawUnit>[] layers = new List<DrawUnit>[19];
+            int waterPixel = getWaterPixel();
             for(int i = 0; i < 19; i++)
             {
                 layers[i] = new List<DrawUnit>();
             }
 
-            if (p.world.getTileAt(p.x, p.y) == (int)Block.DeepWater)
+            /*if (waterPixel==16)
             {
-                Sprite st = tileSprites[(int)Block.OceanFloor];
                 g.Clear(Color.Black);
                 for (int x = p.x - 7; x <= p.x + 7; x++) //important! tiles get drawn on before blocks
                 {
@@ -148,7 +173,7 @@ namespace GameSystem
                     }
                 }
             }
-            else
+            else*/
             { 
                 g.Clear(Color.Black);
                 for (int x = p.x - 7; x <= p.x + 7; x++) //important! tiles get drawn on before blocks
@@ -163,34 +188,37 @@ namespace GameSystem
                     Player p2 = Game.players[i];
                     if (p2.world == p.world)
                     {
-                        if (p2.world.getTileAt(p2.x, p2.y) != (int)Block.DeepWater)
-                        {
-                            int layer = p2.y - p.y + 9;
-                            if (layer >= 0 && layer < layers.Length)
-                                layers[layer].Add(new DrawUnit(p2.getSprite(), 72 + p2.x * 16 + p2.xOffset - p.x * 16 - p.xOffset, 64 + p2.y * 16 + p2.yOffset - p.y * 16 - p.yOffset));
-                        }
+                        int layer = p2.y - p.y + 9;
+                        if (layer >= 0 && layer < layers.Length)
+                            layers[layer].Add(new DrawUnit(p2.getSprite(), 72 + p2.x * 16 + p2.xOffset - p.x * 16 - p.xOffset, 64 + p2.y * 16 + p2.yOffset - p.y * 16 - p.yOffset));
                     }
                 }
                 List<Entity> entities = p.world.entities;
                 for (int i = 0; i < entities.Count; i++)
                 {
                     Entity e = entities[i];
-                    if (e.world.getTileAt(e.x, e.y) != (int)Block.DeepWater)
-                    {
-                        int layer = e.y - p.y + 9;
-                        if (layer >= 0 && layer < layers.Length)
-                            layers[layer].Add(new DrawUnit(e.getSprite(), 72 + 16 * e.x - p.x * 16 - p.xOffset, 64 + 16 * e.y - p.y * 16 - p.yOffset));
-                    }
+                    int layer = e.y - p.y + 9;
+                    if (layer >= 0 && layer < layers.Length)
+                        layers[layer].Add(new DrawUnit(e.getSprite(), 72 + 16 * e.x - p.x * 16 - p.xOffset + e.xOffset, 64 + 16 * e.y - p.y * 16 - p.yOffset + e.yOffset));
                 }
                 for (int x = p.x - 7; x <= p.x + 7; x++)
                 {
                     for (int y = p.y - 5; y <= p.y + 6; y++)
                     {
-                        if (p.world.getTileAt(x, y) == (int)Block.DeepWater) continue;
                         int block = p.world.getBlockAt(x, y);
-                        if (block == 0) continue;
-                        Sprite s = tileSprites[block];
-                        if (s != null) layers[y - p.y + 8].Add(new DrawUnit(s, 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
+                        if (block == 0) {
+                            if(p.world.getTileAt(x,y)!=0&&waterPixel<16&&waterPixel!=0)
+                            {
+                                //TODO draw various water levels
+                                Sprite s = tileSprites[(int)Block.Water];
+                                if (s != null) layers[y - p.y + 8].Add(new DrawUnit(s, 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
+                            }
+                        }
+                        else
+                        {
+                            Sprite s = tileSprites[block];
+                            if (s != null) layers[y - p.y + 8].Add(new DrawUnit(s, 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
+                        }
                     }
                 }
             }
@@ -198,10 +226,17 @@ namespace GameSystem
             {
                 foreach(DrawUnit d in layers[i])
                 {
-                    d.sprite.draw(g, d.x, d.y);
+                    Sprite s = d.sprite;
+                    if(s==tileSprites[(int)Block.Water])
+                    {
+                        s.yOffset = waterPixel;
+                        s.draw(g, d.x, d.y);
+                        s.yOffset = 0;
+                    } else
+                    s.draw(g, d.x, d.y);
                 }
             }
-            if(p.world.getTileAt(p.x,p.y)==(int)Block.DeepWater)
+            if(waterPixel==16)
             {
                 SolidBrush sb = new SolidBrush(Color.FromArgb(128, Color.DarkBlue));
                 g.FillRectangle(sb, 0, 0, 160, 144);
@@ -224,7 +259,7 @@ namespace GameSystem
             }
             foreach(Entity e in p.world.entities)
             {
-                if (e.collides(p.x, p.y, p.xOffset, p.yOffset, 16, 16)) return false;
+                if (e.collides(x, y, p.xOffset, p.yOffset, 16, 16)) return false;
             }
             if (b == 0)
                 return true;
@@ -240,8 +275,25 @@ namespace GameSystem
         public override void run(Player p)
         {
             startMenu();
-            if(p.xOffset==0&&p.yOffset==0&&p.wait==0) //if the player is ready to move again
+            if (p.xOffset == 0 && p.yOffset == 0 && p.wait == 0) //if the player is ready to move again
             {
+                {
+                    Block b = (Block)p.world.getTileAt(p.x, p.y);
+                    if(b==Block.UpStairs)
+                    {
+                        p.level--;
+                        p.x--;
+                        p.xOffset = 15;
+                        return;
+                    }
+                    if (b == Block.DownStairs)
+                    {
+                        p.level++;
+                        p.x--;
+                        p.xOffset = 15;
+                        return;
+                    }
+                }
                 if (pKeyLeft)
                 {
                     if (p.dir == 2)
@@ -307,6 +359,23 @@ namespace GameSystem
                     {
                         p.dir = 3;
                         p.wait = WAIT;
+                    }
+                }
+                if(pKeyA&&!keyA)
+                {
+                    int x = p.x;
+                    int y = p.y;
+                    switch (p.dir)
+                    {
+                        case 0: x++; break;
+                        case 1: y--; break;
+                        case 2: x--; break;
+                        case 3: y++; break;
+                    }
+                    Entity e = p.world.entityAt(x, y);
+                    if(e!=null)
+                    {
+                        e.interact(p);
                     }
                 }
             } else

@@ -14,6 +14,7 @@ namespace GameSystem
         public static Random rand = new Random(); //global random
         public static long frames = 0; //what frame the game is in, useful for animated sprites
         public static string[] args;
+        static bool waterRising = false;
 
         public static Player getPlayer(int id)
         {
@@ -52,15 +53,56 @@ namespace GameSystem
         public static void run()
         {
             Player[] p = players; //because lazy
+            if (waterRising)
+            {
+                if (WorldState.drainFrames == 0)
+                {
+                    WorldState.waterLevel--;
+                    if (WorldState.waterLevel == 0)
+                    {
+                        //TODO do game lose
+                        WorldState.waterLevel = 2 * WorldState.WATER_SPEED;
+                    }
+                    else if (WorldState.waterLevel % WorldState.WATER_SPEED == 0)
+                    {
+                        int level = WorldState.waterLevel / WorldState.WATER_SPEED;
+                        WorldState.pipeUsesLeft[level]--;
+                        if (WorldState.pipeUsesLeft[level] == 0)
+                        {
+                            //TODO do game lose
+                        }
+                    }
+                }
+                else
+                {
+                    WorldState.waterLevel--;
+                    WorldState.drainFrames--;
+                }
+            } else
+            {
+                for (int i = 0; i < p.Length; i++)
+                    if (p[i].level == 1) waterRising = true;
+            }
             for (int i = 0; i < p.Length; i++)
             {
+                if(p[i].getState() is WorldState)
+                {
+                    WorldState w = (WorldState)p[i].getState();
+                    if (w.getWaterPixel()==16)
+                        w.WALK_SPEED = 1;
+                    else
+                        w.WALK_SPEED = 2;
+                }
                 p[i].run();
             }
             bool canTick = false; //whether or not any worlds can tick, i.e. if any players are outside of menus
             for (int i = 0; i < p.Length; i++)
             {
                 if (p[i].getState() is WorldState && !(p[i].getState() is WorldEditor))
+                {
                     canTick = true;
+                    p[i].world.tick(p[i]);
+                }
             }
             if (canTick)
             {

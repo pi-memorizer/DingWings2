@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="Maps.cs" />
     <Compile Include="Menus.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

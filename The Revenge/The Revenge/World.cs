@@ -28,6 +28,10 @@ namespace GameSystem
             }
             return null;
         }
+        public virtual void tick(Player p)
+        {
+
+        }
     }
 
     public struct Coord
