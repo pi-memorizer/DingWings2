@@ -19,6 +19,7 @@ namespace GameSystem
         const int WAIT = 3; //amount of frames to wait before moving after changing direction
         public int WALK_SPEED = 2; //how many pixels the player moves per frame
         static Sprite[] waterSprites, waterLevelSprites;
+        public static Sprite bubble = new Sprite("bubble.png");
 
         public static int drainFrames = 0;
 
@@ -55,6 +56,15 @@ namespace GameSystem
                 Player.female[i] = new Sprite(Player.femaleSheet, (i % 4) * 16, (i / 4) * 24, 16, 24, 0, -8);
                 if (i > 3)
                     Player.female[i].yOffset = -9;
+            }
+
+            Bitmap maleScubaSheet = new Bitmap("guysnorkel.png");
+            Player.maleScuba = new Sprite[12];
+            for (int i = 0; i < 12; i++)
+            {
+                Player.maleScuba[i] = new Sprite(maleScubaSheet, (i % 4) * 16, (i / 4) * 24, 16, 24, 0, -8);
+                if (i > 3)
+                    Player.maleScuba[i].yOffset = -9;
             }
 
             Bitmap water = new Bitmap("water.png");
@@ -216,6 +226,7 @@ namespace GameSystem
                     Player p2 = Game.players[i];
                     if (p2.world == p.world)
                     {
+                        p2.isScuba = waterPixel > 13;
                         int layer = p2.y - p.y + 9;
                         if (layer >= 0 && layer < layers.Length)
                             layers[layer].Add(new DrawUnit(p2.getSprite(), 72 + p2.x * 16 + p2.xOffset - p.x * 16 - p.xOffset, 64 + p2.y * 16 + p2.yOffset - p.y * 16 - p.yOffset));
@@ -285,6 +296,13 @@ namespace GameSystem
             {
                 SolidBrush sb = new SolidBrush(Color.FromArgb(128, Color.DarkBlue));
                 g.FillRectangle(sb, 0, 0, 200, 144);
+            }
+            if(p.isScuba)
+            {
+                for(int i = 0; i < 8*p.breath/Player.MAX_BREATH; i++)
+                {
+                    bubble.draw(g, 2 + i * 10, 2);
+                }
             }
         }
 

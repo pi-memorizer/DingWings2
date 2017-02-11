@@ -18,7 +18,7 @@ namespace GameSystem
         DownStairs = 80, TableBottomLeft, TableBottomMiddle, TableBottomRight, TableBottomExtendsRight, TableBottomColumn,
         UpStairs = 96, TableLeftRow, TableMiddleRow, TableRightRow, TableSingle,
         ChairLeft = 256, ChairDown, ChairRight, ChairUp, ComputerOn, ComputerOff, ComputerDesk, ComputerBack, BigScience, LittleScience,
-        PottedPlant = 534,
+        PottedPlant = 278,
         Floor1Wall1 = 512, Floor1Wall2, Floor1Wall3, Floor1Wall4, Floor1Wall5, Floor1Wall6, Floor1Wall7, Floor1Wall8, Floor1Wall9, Floor1Wall10, Floor1Wall11, Floor1Wall12,
     }
 

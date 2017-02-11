@@ -92,6 +92,23 @@ namespace GameSystem
                     else
                         w.WALK_SPEED = 2;
                 }
+                if(p[i].isScuba)
+                {
+                    if(p[i].breath==0)
+                    {
+                        if(i==0)
+                            lose(new string[] { "Humans aren't built for living underwater.", "The other player forgot how to breath."});
+                        else
+                            lose(new string[] { "The other player forgot how to breath.", "Humans aren't built for living underwater." });
+                    } else
+                    {
+                        p[i].breath--;
+                    }
+                } else
+                {
+                    if (p[i].breath < Player.MAX_BREATH)
+                        p[i].breath++;
+                }
                 p[i].run();
             }
             bool canTick = false; //whether or not any worlds can tick, i.e. if any players are outside of menus

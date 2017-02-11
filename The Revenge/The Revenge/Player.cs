@@ -26,8 +26,11 @@ namespace GameSystem
         public int wait = 0; //how many frames the player has waited since turning
         public int dir = 3; //the direction the player is facing, 0=right,1=up,2=left,3=down
         public bool isMale = true;
-        public static Sprite[] male, female; //sprites for multiple player types, will likely be changed
+        public static Sprite[] male, female, maleScuba; //sprites for multiple player types, will likely be changed
         public static Bitmap maleSheet, femaleSheet; //the spritesheets for the player
+        public bool isScuba = false;
+        public static int MAX_BREATH = 1200;
+        public int breath = MAX_BREATH;
 
         public static int NUM_ITEMS = 64;
         public bool[] items = new bool[NUM_ITEMS];
@@ -157,7 +160,12 @@ namespace GameSystem
                     s += (j % 2) * 4;
             }
             if (isMale)
-                return male[s];
+            {
+                if (isScuba)
+                    return maleScuba[s];
+                else
+                    return male[s];
+            }
             else
                 return female[s];
         }
