@@ -246,4 +246,85 @@ namespace GameSystem
         public override void tick()
         {}
     }
+
+    class DoorLever : Entity
+    {
+        DoorEntity[] coords;
+        static Sprite leverUp = WorldState.tileSprites[(int)Block.LeverUp], leverDown = WorldState.tileSprites[(int)Block.LeverDown];
+        bool toggled = false;
+
+        public DoorLever(DoorEntity[] coords, World w, int x, int y) : base(w,x,y)
+        {
+            this.coords = coords;
+        }
+
+        public override Sprite getSprite()
+        {
+            return toggled ? leverUp : leverDown;
+        }
+
+        public override bool interact(Player p)
+        {
+            toggled = !toggled;
+            for(int i = 0; i < coords.Length; i++)
+            {
+                DoorEntity d = p.world.entityAt(coords[i].x, coords[i].y) as DoorEntity;
+                if(d!=null)
+                {
+                    d.open = !d.open;
+                }
+            }
+            return true;
+        }
+
+        public override void onStepOn(Player p)
+        {}
+
+        public override void tick()
+        {}
+    }
+
+    class DoorEntity : Entity
+    {
+        public bool open;
+        public Sprite sprite = null;
+
+        public DoorEntity(bool open, World w, int x, int y) : base(w,x,y)
+        {
+            this.open = open;
+        }
+
+        public override Sprite getSprite()
+        {
+            if(sprite==null)
+            {
+                if (world.getBlockAt(x, y - 1) == 0)
+                {
+                    sprite = WorldState.tileSprites[(int)Block.DoorLeft];
+                }
+                else
+                {
+                    sprite = WorldState.tileSprites[(int)Block.DoorSide];
+                }
+            }
+            return !open ? sprite : WorldState.tileSprites[0];
+        }
+
+        public override bool collides(int x, int y, int xOffset, int yOffset, int width, int height)
+        {
+            if (!open) return base.collides(x, y, xOffset, yOffset, width, height); else return false;
+        }
+
+        public override bool interact(Player p)
+        {
+            p.pushState(new TextBox(p.getState(), p, "The door doesn't want to budge."));
+            return true;
+        }
+
+        public override void onStepOn(Player p)
+        { }
+
+        public override void tick()
+        {}
+    }
 }

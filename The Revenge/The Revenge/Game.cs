@@ -14,7 +14,7 @@ namespace GameSystem
         public static Random rand = new Random(); //global random
         public static long frames = 0; //what frame the game is in, useful for animated sprites
         public static string[] args;
-        static bool waterRising = true;
+        static bool waterRising = false;
 
         static Game()
         {

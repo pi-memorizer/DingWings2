@@ -87,7 +87,7 @@ namespace GameSystem
             worlds.Add(0, new Map0(0, 32, 32));
             worlds.Add(1, new Map1(1, 32, 32));
             worlds.Add(2, new Map1(2, 32, 32));
-            worlds.Add(3, new Map1(3, 32, 32));
+            worlds.Add(3, new Map3(3, 32, 32));
             foreach (World w in worlds.Values)
             {
                 w.load(null);
