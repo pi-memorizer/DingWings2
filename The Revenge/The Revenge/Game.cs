@@ -43,6 +43,7 @@ namespace GameSystem
             SoundSystem.load("stairs", "wav");
             SoundSystem.load("water", "wav");
             SoundSystem.setVolume("water", .3);
+            SoundSystem.load("tbc", "wav");
         }
 
         public static Player getPlayer(int id)

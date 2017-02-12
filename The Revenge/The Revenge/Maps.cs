@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -301,7 +302,6 @@ namespace GameSystem
                 14,14,
                 15,14,
                 18,14,
-                22,14,
                 14,15,
                 15,15,
                 17,15,
@@ -465,7 +465,7 @@ namespace GameSystem
         {
             EventEntity e2 = e as EventEntity;
             if (e2 == null) return;
-            if(e2.message!="")
+            if(e2.message=="")
             {
                 e2.message = "The water seems to have permanently drained away. You only just barely resist to urge to cheer.";
                 WorldState.waterLevel += 2000000000;
@@ -502,10 +502,24 @@ namespace GameSystem
     {
         MurderBunny buns;
         int frames = 0;
+        Sprite tbc = new Sprite("tbc.png");
 
         public EndAnimation(Player player) : base(player)
         {
             buns = new MurderBunny(p.world, 17, 3);
+        }
+
+        public override void draw(Graphics g, Player p)
+        {
+            base.draw(g, p);
+            if(frames>=150)
+            {
+                if (frames >= 170)
+                    tbc.draw(g, 140, 128);
+                else
+                    tbc.draw(g, 160 - (frames - 150), 128);
+                g.Clear(Color.FromArgb(128, Color.SaddleBrown));
+            }
         }
 
         public override void run(Player p)
@@ -516,7 +530,36 @@ namespace GameSystem
 
             if (p.xOffset == 0 && p.x == 16)
             {
-                if(p.yOffset!=-100)
+                if(p.y==3&&p.yOffset==0)
+                {
+                    p.dir = 0;
+                    if(frames>=270)
+                    {
+                        WorldState.worldinit();
+                        Player[] players = Game.players;
+                        for (int i = 0; i < players.Length; i++)
+                        {
+                            players[i] = new Player(i + 1);
+                            players[i].setState(new EndState(p));
+                        }
+                        Game.waterRising = false;
+                    } else
+                    if(frames>=150)
+                    {
+                        SoundSystem.setBackgroundMusic("tbc");
+                    } else if(frames>=120)
+                    {
+                        buns.attack = true;
+                        frames++;
+                    } else
+                    {
+                        frames++;
+                    }
+                } else if(p.yOffset==0)
+                {
+                    p.y--;
+                    p.yOffset = 15;
+                } else
                 {
                     p.yOffset--;
                 }
@@ -537,7 +580,7 @@ namespace GameSystem
 
         }
 
-        bool attack = false;
+        public bool attack = false;
         Sprite attackSprite = WorldState.tileSprites[279], normalSprite = WorldState.tileSprites[127];
         public override Sprite getSprite()
         {

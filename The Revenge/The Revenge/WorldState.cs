@@ -260,10 +260,12 @@ namespace GameSystem
                         p2.isScuba = waterPixel > 13;
                         int layer = p2.y - p.y + 9;
                         if (layer >= 0 && layer < layers.Length)
-                            layers[layer].Add(new DrawUnit(p2.getSprite(), 72 + p2.x * 16 + p2.xOffset - p.x * 16 - p.xOffset, 64 + p2.y * 16 + p2.yOffset - p.y * 16 - p.yOffset));
-                        if(waterPixel>0&&waterPixel<16)
                         {
-                            layers[layer].Add(new DrawUnit(waterLevelSprites[waterPixel], 72 + p2.x * 16 + p2.xOffset - p.x * 16 - p.xOffset, 64 + p2.y * 16 + p2.yOffset - p.y * 16 - p.yOffset));
+                            layers[layer].Add(new DrawUnit(p2.getSprite(), 72 + p2.x * 16 + p2.xOffset - p.x * 16 - p.xOffset, 64 + p2.y * 16 + p2.yOffset - p.y * 16 - p.yOffset));
+                            if (waterPixel > 0 && waterPixel < 16)
+                            {
+                                layers[layer].Add(new DrawUnit(waterLevelSprites[waterPixel], 72 + p2.x * 16 + p2.xOffset - p.x * 16 - p.xOffset, 64 + p2.y * 16 + p2.yOffset - p.y * 16 - p.yOffset));
+                            }
                         }
                     }
                 }
