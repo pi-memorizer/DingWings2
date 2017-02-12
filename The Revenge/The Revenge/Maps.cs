@@ -39,7 +39,7 @@ namespace GameSystem
                 {
                     Game.waterRising = true;
                     //WorldState.drainFrames += 3 * WorldState.WATER_SPEED / 2;
-                    WorldState.waterLevel *= 2;
+                    WorldState.waterLevel = 2*WorldState.WATER_SPEED;
                     e2.message = "After tightening the valve, you hear a rush of water below.";
                 }
                 else Console.WriteLine("no");
@@ -223,8 +223,8 @@ namespace GameSystem
             {
                 if (Player.items[(int)Player.Item.Knob])
                 {
-                    p.pushState(new TextBox(p.getState(), p, "You reattach the knob and tighten it until the water start to recede."));
-                    WorldState.waterLevel += WorldState.WATER_SPEED * 3 / 2;
+                    p.pushState(new TextBox(p.getState(), p, "You reattach the knob and tighten it until the water recedes."));
+                    WorldState.waterLevel = WorldState.WATER_SPEED * 3;
                     e2.message = "";
                 }
             } 
@@ -384,7 +384,7 @@ namespace GameSystem
             if (e2.message == "")
             {
                 e2.message = "You tighten the valve and enjoy the glorious sound of draining water..";
-                WorldState.waterLevel += WorldState.WATER_SPEED * 3 / 2;
+                WorldState.waterLevel = WorldState.WATER_SPEED * 4;
             } else
             {
                 e2.message = "Well now that's a useless valve.";

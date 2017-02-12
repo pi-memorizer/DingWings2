@@ -17,6 +17,7 @@ namespace GameSystem
         {
             this.message = message;
             p.pushState(new TextBox(this, p, message));
+            SoundSystem.setBackgroundMusic("emergency");
         }
 
         public override void draw(Graphics g, Player p)
