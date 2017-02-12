@@ -10,3 +10,9 @@ C:\Game Dev\Dingwings 2\The Revenge\The Revenge\obj\Debug\The Revenge.pdb
 C:\Users\Nathan\Documents\KSU\Game Jam\DingWings2\The Revenge\The Revenge\bin\Debug\The Revenge.exe.config
 C:\Users\Nathan\Documents\KSU\Game Jam\DingWings2\The Revenge\The Revenge\obj\Debug\The Revenge.exe
 C:\Users\Nathan\Documents\KSU\Game Jam\DingWings2\The Revenge\The Revenge\obj\Debug\The Revenge.pdb
+C:\Users\Nathan\Documents\KSU\Game Jam\DingWings2\The Revenge\The Revenge\bin\Debug\The Revenge.exe
+C:\Users\Nathan\Documents\KSU\Game Jam\DingWings2\The Revenge\The Revenge\bin\Debug\The Revenge.pdb
+C:\Users\Nathan\Documents\KSU\Game Jam\DingWings2\The Revenge\The Revenge\obj\Debug\The Revenge.csprojResolveAssemblyReference.cache
+C:\Users\Nathan\Documents\KSU\Game Jam\DingWings2\The Revenge\The Revenge\obj\Debug\The_Revenge.Form1.resources
+C:\Users\Nathan\Documents\KSU\Game Jam\DingWings2\The Revenge\The Revenge\obj\Debug\The_Revenge.Properties.Resources.resources
+C:\Users\Nathan\Documents\KSU\Game Jam\DingWings2\The Revenge\The Revenge\obj\Debug\The Revenge.csproj.GenerateResource.Cache
