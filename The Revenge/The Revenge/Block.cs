@@ -43,16 +43,16 @@ namespace GameSystem
             }
             setFalse(Block.DoorSide);
             setFalse(Block.DoorSide + 16);
-            for(int i = 512; i < 512+39; i++)
+            for(int i = 512; i < 512+52; i++)
             {
-                int x = i % 13;
+                int x = (i-512) % 13;
                 if (x <= 4) setTrue((Block)i);
                 else if (x == 12 || x == 6 || x == 7) setTrue((Block)i);
                 else setFalse((Block)i);
             }
             for(int i = 0; i < 4; i++)
             {
-                setTrue((Block)(512 + 13 * 3 + 8 + i));
+                setTrue((Block)(512 + 13 * 4 + 8 + i));
             }
         }
 

@@ -106,6 +106,7 @@ namespace GameSystem
                 3,
                 3
             };
+            for (int i = 0; i < Player.items.Length; i++) Player.items[i] = false;
         }
 
         //loads blocks from a sprite sheet
