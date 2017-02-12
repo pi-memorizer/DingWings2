@@ -26,7 +26,7 @@ namespace GameSystem
         public int wait = 0; //how many frames the player has waited since turning
         public int dir = 3; //the direction the player is facing, 0=right,1=up,2=left,3=down
         public bool isMale = true;
-        public static Sprite[] male, female, maleScuba; //sprites for multiple player types, will likely be changed
+        public static Sprite[] male, female, maleScuba, femaleScuba; //sprites for multiple player types, will likely be changed
         public static Bitmap maleSheet, femaleSheet; //the spritesheets for the player
         public bool isScuba = false;
         public static int MAX_BREATH = 1200;
@@ -54,6 +54,7 @@ namespace GameSystem
         {
             g = Graphics.FromImage(offscreenImg);
             this.id = id;
+            if (id == 2) x++;
 
             //code for world editing
             if(Game.args.Length==0)
@@ -167,7 +168,11 @@ namespace GameSystem
                     return male[s];
             }
             else
-                return female[s];
+            {
+                if (isScuba)
+                    return femaleScuba[s];
+                else return female[s];
+            }
         }
     }
 }

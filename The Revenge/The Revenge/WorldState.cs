@@ -66,6 +66,14 @@ namespace GameSystem
                 if (i > 3)
                     Player.maleScuba[i].yOffset = -9;
             }
+            Bitmap femaleScubaSheet = new Bitmap("guy2snorkel.png");
+            Player.femaleScuba = new Sprite[12];
+            for (int i = 0; i < 12; i++)
+            {
+                Player.femaleScuba[i] = new Sprite(femaleScubaSheet, (i % 4) * 16, (i / 4) * 24, 16, 24, 0, -8);
+                if (i > 3)
+                    Player.femaleScuba[i].yOffset = -9;
+            }
 
             Bitmap water = new Bitmap("water.png");
             waterSprites = new Sprite[16];
@@ -231,14 +239,15 @@ namespace GameSystem
                     {
                         Sprite s;
                         int layer = y - p.y + 7;
-                        if (waterPixel > 0 && waterPixel < 16&&p.world.isInside(x,y))
+                        int tile = p.world.getTileAt(x, y);
+                        if (waterPixel > 0 && waterPixel < 16&&p.world.isInside(x,y)&&(tile!=(int)Block.UpStairs&&tile!=(int)Block.DownStairs))
                         {
                             s = waterSprites[0];
                             layer--;
                         }
                         else
                         {
-                            s = tileSprites[p.world.getTileAt(x, y)];
+                            s = tileSprites[tile];
                         }
                         layers[layer].Add(new DrawUnit(s, 72 - p.xOffset + 16 * (x - p.x), 64 - p.yOffset + 16 * (y - p.y)));
                     }
@@ -273,7 +282,8 @@ namespace GameSystem
                         int block = p.world.getBlockAt(x, y);
                         if (block == 0) {
                             if (!p.world.isInside(x, y)||y==0) continue;
-                            if(p.world.getTileAt(x,y)!=0&&waterPixel<16&&waterPixel!=0)
+                            int t = p.world.getTileAt(x, y);
+                            if(p.world.getTileAt(x,y)!=0&&waterPixel<16&&waterPixel!=0&&t!=(int)Block.UpStairs&&t!=(int)Block.DownStairs)
                             {
                                 //TODO draw various water levels
                                 Sprite s = waterSprites[(waterPixel)];
@@ -366,12 +376,22 @@ namespace GameSystem
                             SoundSystem.play("stairs");
                             stairCount++;
                         }
-                        if (p.worldID == 1) p.y--;
-                        p.dir = 2;
-                        p.level--;
-                        p.x--;
-                        p.xOffset = 16-WALK_SPEED;
-                        p.worldID--;
+                        if (p.worldID==3)
+                        {
+                            p.dir = 3;
+                            p.level--;
+                            p.worldID--;
+                            p.x = 6;
+                            p.y = 0;
+                            p.yOffset = WALK_SPEED-16;
+                        } else
+                        {
+                            if (p.worldID == 1) p.y--;
+                            p.dir = 2;
+                            p.level--;
+                            p.x--; p.xOffset = 16 - WALK_SPEED;
+                            p.worldID--;
+                        }
                         return;
                     }
                     if (b == Block.DownStairs)
@@ -381,12 +401,24 @@ namespace GameSystem
                             SoundSystem.play("stairs");
                             stairCount++;
                         }
-                        p.level++;
-                        p.x--;
-                        if (p.worldID == 0) p.y++;
-                        p.xOffset = 16-WALK_SPEED;
-                        p.dir = 2;
-                        p.worldID++;
+                        if (p.worldID == 2)
+                        {
+                            p.level++;
+                            p.x = 6;
+                            p.y = 0;
+                            p.worldID++;
+                            p.yOffset = WALK_SPEED-16;
+                            p.dir = 3;
+                        }
+                        else
+                        {
+                            p.level++;
+                            p.x--;
+                            if (p.worldID == 0) p.y++;
+                            p.xOffset = 16 - WALK_SPEED;
+                            p.dir = 2;
+                            p.worldID++;
+                        }
                         return;
                     }
                 }

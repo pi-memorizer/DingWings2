@@ -57,7 +57,7 @@
             this.ClientSize = new System.Drawing.Size(538, 410);
             this.Controls.Add(this.pictureBox);
             this.Name = "Form1";
-            this.Text = "<Game name here>";
+            this.Text = "Operation Inundation";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();

@@ -313,11 +313,11 @@ namespace GameSystem
             {
                 if (world.getBlockAt(x, y - 1) == 0)
                 {
-                    sprite = WorldState.tileSprites[(int)Block.DoorLeft];
+                    sprite = WorldState.tileSprites[(int)Block.DoorLeft+16];
                 }
                 else
                 {
-                    sprite = WorldState.tileSprites[(int)Block.DoorSide];
+                    sprite = WorldState.tileSprites[(int)Block.DoorSide+16];
                 }
             }
             return !open ? sprite : WorldState.tileSprites[0];
@@ -364,6 +364,7 @@ namespace GameSystem
             {
                 active = false;
                 WorldState.drainFrames += amount;
+                p.pushState(new TextBox(p.getState(), p, "You twisted the valve and water slowly recedes!"));
 
             } else
             {

@@ -10,7 +10,7 @@ namespace GameSystem
     //enumerator for Blocks, mapped to integers and here for us to reference in code
     public enum Block : ushort
     {
-        Air = 0, CreamWall, DuctTape, RabbitBed, HammerHead = 4, LabFloor, Valve,
+        Air = 0, CreamWall, DuctTape, RabbitBed, HammerHead = 4, LabFloor, Valve, TrashCan = 11,
         OldDoorRight = 16, BoringCarpet, KeyCard, Wrench, HammerHandle, LittleScienceFloor, Box,
         OldDoorLeft = 32, DeskSingle, DeskLeft, DeskRight, LeverDown = 37,
         OldDoorDown = 48, TableTopLeft, TableTopMiddle, TableTopRight, TableTopExtendsRight, LeverUp,
@@ -37,7 +37,7 @@ namespace GameSystem
         Block.DownStairs, Block.TableBottomLeft, Block.TableBottomMiddle, Block.TableBottomRight, Block.TableBottomExtendsRight, Block.TableBottomColumn,
         Block.UpStairs, Block.TableLeftRow, Block.TableMiddleRow, Block.TableRightRow, Block.TableSingle,
         Block.ChairLeft, Block.ChairDown, Block.ChairRight, Block.ChairUp, Block.ComputerOn, Block.ComputerOff, Block.ComputerDesk, Block.ComputerBack, Block.BigScience, Block.LittleScience,
-        Block.DoorLeft, Block.DoorRight, Block.PottedPlant,
+        Block.DoorLeft, Block.DoorRight, Block.PottedPlant, Block.TrashCan
             };
             for (int i = 0; i < b.Length; i++)
                 setTrue(b[i]);

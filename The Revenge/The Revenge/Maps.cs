@@ -49,7 +49,7 @@ namespace GameSystem
         void note(Player p, Entity e)
         {
             p.pushState(new TextBox(p.getState(), p, "This note will self destruct in approximately 4 to 6 weeks"));
-            p.pushState(new TextBox(p.getState(), p, "Agent 842, because you missed the debriefing, we had Peter Warren drop off this note of instruction for you. What we need you to retrieve is in the vault on the lowest level. All the lower levels are flooded, so you'll need to find a way to deal with that. The main pipe for the building might be a good place to start. Good luck"));
+            p.pushState(new TextBox(p.getState(), p, "Agent 842, because you missed the debriefing, we had Peter Warren drop off this note of instruction for you. What we need you to retrieve is in the vault on the lowest level. All the lower levels are flooded, so you'll need to find a way to deal with that. The main pipe for the building might be a good place to start. If you require Agent 794 to assist you, press any Player 2 key. Good luck"));
             e.forceRemove();
         }
 
@@ -189,23 +189,45 @@ namespace GameSystem
             entities.Add(new MessageEntity(WorldState.tileSprites[0], "It says 'Nick has told his dad joke for the day.' You don't know what that means.", this, 8, 11));
             entities.Add(new EventEntity(WorldState.tileSprites[0], "", boardedDoor, this, 28, 5));
             entities.Add(new EventEntity(WorldState.tileSprites[0], "", boardedDoor, this, 28, 6));
+            entities.Add(new EventEntity(WorldState.tileSprites[7], "The twist knob for the valve seems to have fallen through a hole in the floor.", mainValve, this, 20, 7));
         }
 
         void boardedDoor(Player p, Entity e)
         {
-            if (Player.items[(int)Player.Item.HammerHandle] && Player.items[(int)Player.Item.DuctTape] && Player.items[(int)Player.Item.HammerHead])
+            if (Player.items[(int)Player.Item.HammerHandle] && Player.items[(int)Player.Item.HammerHead])
             {
-                p.world.editing = true;
-                p.world.setBlockAt(e.x, e.y, 0);
-                p.world.editing = false;
-                e.forceRemove();
-                p.pushState(new TextBox(p.getState(), p, "Somehow you fix a hammer and use it to pry open the door. Not even you are sure how you managed that."));
-                SoundSystem.play("door");
+                if (Player.items[(int)Player.Item.DuctTape])
+                {
+                    p.world.editing = true;
+                    p.world.setBlockAt(e.x, e.y, 0);
+                    p.world.editing = false;
+                    e.forceRemove();
+                    p.pushState(new TextBox(p.getState(), p, "Somehow you fix a hammer and use it to pry open the door. Not even you are sure how you managed that."));
+                    SoundSystem.play("door");
+                } else
+                {
+                    p.pushState(new TextBox(p.getState(), p, "You have the hammer parts, but nothing to keep them together."));
+                }
             }
             else
             {
                 p.pushState(new TextBox(p.getState(), p, "The door is boarded shut. Maybe you can find something to pry the boards off?"));
             }
+        }
+
+        void mainValve(Player p, Entity e)
+        {
+            EventEntity e2 = e as EventEntity;
+            if (e2 == null) return;
+            if (e2.message!="")
+            {
+                if (Player.items[(int)Player.Item.Knob])
+                {
+                    p.pushState(new TextBox(p.getState(), p, "You reattach the knob and tighten it until the water start to recede."));
+                    WorldState.waterLevel += WorldState.WATER_SPEED * 3 / 2;
+                    e2.message = "";
+                }
+            } 
         }
 
         public override void tick(Player p)
@@ -333,7 +355,7 @@ namespace GameSystem
                 entities.Add(new Pushable(WorldState.tileSprites[(int)Block.Box], this, coords[i], coords[i + 1]));
             entities.Add(new WorldItem(WorldState.tileSprites[6], Player.Item.Knob, "Knob for the main pipe upstairs", this, 22, 7));
             entities.Add(new ValveEntity(WorldState.tileSprites[9], 20 * 60, this, 28, 8));
-            entities.Add(new ValveEntity(WorldState.tileSprites[10], 20 * 60, this, 2, 8));
+            entities.Add(new ValveEntity(WorldState.tileSprites[8], 20 * 60, this, 2, 8));
             entities.Add(new ValveEntity(WorldState.tileSprites[9], 20 * 60, this, 17, 19));
             string[] choices =
             {
@@ -345,6 +367,17 @@ namespace GameSystem
             entities.Add(new MessageEntity(WorldState.tileSprites[10], "It's a tiny motivational poster with a sticky note stuck to it proclaiming 'Dr. Jenkin's office.'", this, 27, 5));
             entities.Add(new MessageEntity(WorldState.tileSprites[26], "'Poster'", this, 27, 25));
         }
+
+        void mainValve(Player p, Entity e)
+        {
+            EventEntity e2 = e as EventEntity;
+            if (e2 == null) return;
+            if (e2.message != "")
+            {
+                p.pushState(new TextBox(p.getState(), p, "You tighten the valve and enjoy the glorious sound of draining water.."));
+                WorldState.waterLevel += WorldState.WATER_SPEED * 3 / 2;
+            }
+        } 
 
         public override void tick(Player p)
         {
@@ -368,45 +401,82 @@ namespace GameSystem
         {
             DoorEntity[] doors =
             {
-                new DoorEntity(false,this,8,13),
+                new DoorEntity(false,this,8,13), //1
                 new DoorEntity(false,this,10,15),
                 new DoorEntity(false,this,12,13),
-                new DoorEntity(true,this,8,17),
-                new DoorEntity(false,this,6,19),
-                new DoorEntity(true,this,4,14),
-                new DoorEntity(true,this,1,19),
+                new DoorEntity(false,this,8,17),
+                new DoorEntity(false,this,6,19), //5
+                new DoorEntity(false,this,4,14),
+                new DoorEntity(false,this,1,19),
                 new DoorEntity(false,this,12,17),
                 new DoorEntity(false,this,14,19),
-                new DoorEntity(false,this,8,25),
-                new DoorEntity(true,this,3,30),
+                new DoorEntity(false,this,8,25),//10
+                new DoorEntity(false,this,3,30),
                 new DoorEntity(false,this,8,29),
-                new DoorEntity(true,this,2,23),
+                new DoorEntity(false,this,2,23),
                 new DoorEntity(false,this,1,27),
-                new DoorEntity(true,this,12,27),
+                new DoorEntity(false,this,12,27),//15
                 new DoorEntity(false,this,16,30),
                 new DoorEntity(false,this,18,23),
-                new DoorEntity(true,this,20,24),
-                new DoorEntity(true,this,20,17),
-                new DoorEntity(true,this,17,15),
+                new DoorEntity(false,this,20,24),
+                new DoorEntity(false,this,20,17),
+                new DoorEntity(false,this,17,15),//20
                 new DoorEntity(false,this,26,23),
-                new DoorEntity(true,this,28,28),
-                new DoorEntity(true,this,20,28),
+                new DoorEntity(false,this,28,28),
+                new DoorEntity(false,this,20,28),
             };
             for (int i = 0; i < doors.Length; i++)
                 entities.Add(doors[i]);
             DoorLever[] levers =
             {
-                new DoorLever(new DoorEntity [] {doors[2-1],doors[4-1],doors[8 - 1],/*doors[18 - 1]*/ },this,10,13),
-                new DoorLever(new DoorEntity [] {doors[1 - 1],doors[3 - 1],doors[9 - 1],doors[12 - 1],doors[15 - 1],doors[16 - 1] },this,14,15),
-                new DoorLever(new DoorEntity [] {doors[10 - 1],doors[11 - 1],doors[23 - 1] },this,11,25),
-                new DoorLever(new DoorEntity [] {doors[5 - 1],doors[11 - 1],doors[14 - 1],doors[22 - 1] },this,5,28),
-                new DoorLever(new DoorEntity [] {doors[16 - 1] },this,1,16),
-                new DoorLever(new DoorEntity [] {doors[17 - 1],doors[18 - 1],doors[21 - 1],doors[23 - 1] },this,23,30),
-                new DoorLever(new DoorEntity [] {doors[20 - 1],doors[22 - 1] },this,22,21),
+                new DoorLever(new DoorEntity [] {doors[1-1],doors[3-1],doors[4 - 1] },this,10,13),
+                new DoorLever(new DoorEntity [] {doors[1 - 1],doors[6 - 1],doors[8 - 1],doors[9 - 1],doors[12 - 1],doors[16 - 1] },this,14,15),
+                new DoorLever(new DoorEntity [] {doors[9- 1],doors[10 - 1],doors[14 - 1] },this,11,25),
+                new DoorLever(new DoorEntity [] {doors[10 - 1],doors[11 - 1],doors[12 - 1]},this,5,28),
+                new DoorLever(new DoorEntity [] {doors[7 - 1], doors[13-1],doors[16-1],doors[18-1] },this,1,16),
+                new DoorLever(new DoorEntity [] {doors[17 - 1],doors[18 - 1],doors[19 - 1],doors[23 - 1] },this,23,30),
+                new DoorLever(new DoorEntity [] {doors[20 - 1],doors[21-1],doors[22 - 1] },this,22,21),
             };
             for(int i = 0; i < levers.Length; i++)
             {
                 entities.Add(levers[i]);
+            }
+            entities.Add(new EventEntity(WorldState.tileSprites[7], "", lastValve, this, 20, 7));
+            entities.Add(new ValveEntity(WorldState.tileSprites[8], 20 * 60, this, 3, 19));
+            entities.Add(new ValveEntity(WorldState.tileSprites[8], 20 * 60, this, 5, 23));
+            entities.Add(new ValveEntity(WorldState.tileSprites[25], 20 * 60, this, 15, 16));
+            entities.Add(new ValveEntity(WorldState.tileSprites[25], 20 * 60, this, 23, 20));
+            entities.Add(new EventEntity(WorldState.tileSprites[0], "", lastDoor, this, 14, 8));
+        }
+
+        void lastValve(Player p, Entity e)
+        {
+            EventEntity e2 = e as EventEntity;
+            if (e2 == null) return;
+            if(e2.message!="")
+            {
+                e2.message = "The water seems to have permanently drained away. You only just barely resist to urge to cheer.";
+                WorldState.waterLevel += 2000000000;
+            } else
+            {
+                e2.message = "No more need for water pumping now.";
+            }
+        }
+
+        void lastDoor(Player p, Entity e)
+        {
+            EventEntity e2 = e as EventEntity;
+            if (e2 == null) return;
+            if(e2.message=="")
+            {
+                p.world.editing = true;
+                p.world.setBlockAt(16, 7, 0);
+                p.world.setBlockAt(17, 7, 0);
+                p.world.editing = false;
+                p.pushState(new TextBox(p.getState(), p, "Ka'ch! You just sort of felt the need to make the sound effect."));
+            } else
+            {
+                p.pushState(new TextBox(p.getState(), p, "You proceed to play Minesweeper. It's not very fun."));
             }
         }
 
