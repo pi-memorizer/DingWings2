@@ -36,7 +36,7 @@ namespace GameSystem
             //loads the tiles from images into their rightful places
             loadSegment("tileset1.png", 0, 256, 16, 16, 0, 0);
             loadSegment("tileset2.png", 256, 256, 16, 24, 0, -8);
-            loadSegment("tileset3.png", 512, 80, 16, 24, 0, -8);
+            loadSegment("tileset3.png", 512, 65, 16, 24, 0, -8);
 
             //if we add more worlds make sure to add them here
             worldinit();
