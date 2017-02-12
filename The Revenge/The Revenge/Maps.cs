@@ -62,7 +62,7 @@ namespace GameSystem
 
         void init()
         {
-            entities.Add(new WorldItem(WorldState.tileSprites[(int)Block.HammerHandle], Player.Item.HammerHandle, "Hammer Handle", this, 5, 0));
+            entities.Add(new WorldItem(WorldState.tileSprites[(int)Block.HammerHandle], Player.Item.HammerHandle, "Hammer Handle", this, 8, 5));
             entities.Add(new WorldItem(WorldState.tileSprites[(int)Block.HammerHead], Player.Item.HammerHead, "Hammer Head", this, 20, 18));
         }
 
