@@ -186,7 +186,7 @@ namespace GameSystem
                 31,31
             };
 
-            for (int i = 0; i < coords.Length; i++)
+            for (int i = 0; i < coords.Length; i += 2)
                 entities.Add(new Pushable(WorldState.tileSprites[(int)Block.Box], this, coords[i], coords[i + 1]));
         }
 
