@@ -28,24 +28,42 @@ namespace GameSystem
 
         static BlockData()
         {
-            Block[] b =
+            for (int i = 0; i < 256; i++)
+                setTrue((Block)i);
+            int[] b =
             {
-                Block.RabbitBed, Block.HammerHead, Block.LabFloor, Block.Valve,
-        Block.BoringCarpet, Block.KeyCard, Block.Wrench, Block.HammerHandle, Block.Box,
-        Block.DeskSingle, Block.DeskLeft, Block.DeskRight, Block.LeverDown,
-        Block.LeverUp,
-        Block.DownStairs, Block.TableBottomLeft, Block.TableBottomMiddle, Block.TableBottomRight, Block.TableBottomExtendsRight, Block.TableBottomColumn,
-        Block.UpStairs, Block.TableLeftRow, Block.TableMiddleRow, Block.TableRightRow, Block.TableSingle,
-        Block.ChairLeft, Block.ChairDown, Block.ChairRight, Block.ChairUp, Block.ComputerOn, Block.ComputerOff, Block.ComputerDesk, Block.ComputerBack, Block.BigScience, Block.LittleScience,
-        Block.DoorLeft, Block.DoorRight, Block.PottedPlant, Block.TrashCan
+                49,50,51,52,53,37,60,61,
+                65,66,67,68,69,64+16+7
             };
             for (int i = 0; i < b.Length; i++)
-                setTrue(b[i]);
+                setFalse((Block)b[i]);
+            for(int i = 256; i < 512; i++)
+            {
+                setTrue((Block)i);
+            }
+            setFalse(Block.DoorSide);
+            setFalse(Block.DoorSide + 16);
+            for(int i = 512; i < 512+39; i++)
+            {
+                int x = i % 13;
+                if (x <= 4) setTrue((Block)i);
+                else if (x == 12 || x == 6 || x == 7) setTrue((Block)i);
+                else setFalse((Block)i);
+            }
+            for(int i = 0; i < 4; i++)
+            {
+                setTrue((Block)(512 + 13 * 3 + 8 + i));
+            }
         }
 
         static void setTrue(Block b)
         {
             values[(int)b] = true;
+        }
+
+        static void setFalse(Block b)
+        {
+            values[(int)b] = false;
         }
 
         public static bool canHaveWater(Block b)
