@@ -238,7 +238,7 @@ namespace GameSystem
 
     class Map2 : StaticWorld
     {
-        public int passId = Game.rand.Next(3);
+        public static int passId = Game.rand.Next(3);
 
         public Map2(int id, int width, int height) : base(id, width, height)
         {
@@ -252,6 +252,7 @@ namespace GameSystem
 
         void init()
         {
+            passId = Game.rand.Next(3);
             int[] coords = new int[]
             {
                 24,0,
@@ -366,16 +367,27 @@ namespace GameSystem
             entities.Add(new MessageEntity(WorldState.tileSprites[0], "Jim, I can't believe you forgot the password again! Remember it's " + choices[passId], this, 1, 16));
             entities.Add(new MessageEntity(WorldState.tileSprites[10], "It's a tiny motivational poster with a sticky note stuck to it proclaiming 'Dr. Jenkin's office.'", this, 27, 5));
             entities.Add(new MessageEntity(WorldState.tileSprites[26], "'Poster'", this, 27, 25));
+            entities.Add(new EventEntity(WorldState.tileSprites[0], "", computer, this, 12, 1));
+            entities.Add(new EventEntity(WorldState.tileSprites[0], "", computer, this, 12, 2));
+            entities.Add(new EventEntity(WorldState.tileSprites[7], "", mainValve, this, 18, 7));
+        }
+
+        void computer(Player p, Entity e)
+        {
+            p.pushState(new PasswordState(p.getState(), p));
         }
 
         void mainValve(Player p, Entity e)
         {
             EventEntity e2 = e as EventEntity;
             if (e2 == null) return;
-            if (e2.message != "")
+            if (e2.message == "")
             {
-                p.pushState(new TextBox(p.getState(), p, "You tighten the valve and enjoy the glorious sound of draining water.."));
+                e2.message = "You tighten the valve and enjoy the glorious sound of draining water..";
                 WorldState.waterLevel += WorldState.WATER_SPEED * 3 / 2;
+            } else
+            {
+                e2.message = "Well now that's a useless valve.";
             }
         } 
 

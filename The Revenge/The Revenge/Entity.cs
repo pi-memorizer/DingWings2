@@ -118,7 +118,7 @@ namespace GameSystem
                     {
                         return false;
                     }
-                    if (w.getWaterPixel() > 6)
+                    if (w.getWaterPixel() > 0)
                     {
                         switch (p.dir)
                         {
@@ -378,5 +378,60 @@ namespace GameSystem
 
         public override void tick()
         {}
+    }
+
+    class PasswordState : GameState
+    {
+        GameState caller;
+        public PasswordState(GameState caller, Player p) : base(p)
+        {
+            this.caller = caller;
+            flags = new int[11];
+            for (int i = 0; i < 11; i++) flags[i] = -2;
+        }
+
+        public override void draw(Graphics g, Player p)
+        {
+            caller.draw(g, p);
+        }
+
+        public override void run(Player p)
+        {
+            if(Map2.passId==-1)
+            {
+                p.popState();
+                p.pushState(new TextBox(p.getState(),p,"So much work for a password."));
+                return;
+            }
+            if(flags[0]==-2)
+            {
+                p.pushState(new KeyboardDialogue(this, "Password:", 0, 10, p));
+            } else if(flags[0]==-1)
+            {
+                p.popState();
+            } else
+            {
+                string s = KeyboardDialogue.getString(flags, 1, flags[0]);
+                string[] choices =
+                {
+                    "poster",
+                    "11",
+                    "password1"
+                };
+                if(s.ToLower()==choices[Map2.passId])
+                {
+                    Map2.passId = -1;
+                    p.popState();
+                    World w = p.world;
+                    w.editing = true;
+                    w.setBlockAt(12, 1, 0);
+                    w.setBlockAt(12, 2, 0);
+                    w.editing = false;
+                    w.entityAt(12, 1).forceRemove();
+                    w.entityAt(12, 2).forceRemove();
+                    SoundSystem.play("door");
+                }
+            }
+        }
     }
 }

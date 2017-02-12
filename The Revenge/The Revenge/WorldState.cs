@@ -102,9 +102,9 @@ namespace GameSystem
             }
             pipeUsesLeft = new int[] {
                 3,
-                2,
-                2,
-                1
+                3,
+                3,
+                3
             };
         }
 
@@ -382,7 +382,7 @@ namespace GameSystem
                             p.level--;
                             p.worldID--;
                             p.x = 6;
-                            p.y = 0;
+                            p.y = 1;
                             p.yOffset = WALK_SPEED-16;
                         } else
                         {
@@ -405,7 +405,7 @@ namespace GameSystem
                         {
                             p.level++;
                             p.x = 6;
-                            p.y = 0;
+                            p.y = 1;
                             p.worldID++;
                             p.yOffset = WALK_SPEED-16;
                             p.dir = 3;
