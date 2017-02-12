@@ -65,5 +65,12 @@ namespace GameSystem
             m.Position = new TimeSpan(0);
             m.Play();
         }
+
+        public static void setVolume(string filename, double factor)
+        {
+            MediaPlayer player = tracks[filename];
+            if (player == null) return;
+            player.Volume *= factor;
+        }
     }
 }

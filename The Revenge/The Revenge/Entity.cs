@@ -116,7 +116,7 @@ namespace GameSystem
                     WorldState w = p.getState() as WorldState;
                     if(w==null)
                     {
-                        return;
+                        return false;
                     }
                     if (w.getWaterPixel() > 6)
                     {
@@ -142,7 +142,7 @@ namespace GameSystem
                         SoundSystem.play("box move");
                     } else
                     {
-                        p.pushState(new TextBox(w, p, "A large box. You wonder if it would float.");
+                        p.pushState(new TextBox(w, p, "A large box. You wonder if it would float."));
                     }
                 }
             }
@@ -278,6 +278,7 @@ namespace GameSystem
         public override bool interact(Player p)
         {
             toggled = !toggled;
+            SoundSystem.play("lever");
             for(int i = 0; i < coords.Length; i++)
             {
                 DoorEntity d = p.world.entityAt(coords[i].x, coords[i].y) as DoorEntity;
@@ -286,7 +287,6 @@ namespace GameSystem
                     d.open = !d.open;
                 }
             }
-            SoundSystem.play("door");
             return true;
         }
 
@@ -336,6 +336,44 @@ namespace GameSystem
 
         public override void onStepOn(Player p)
         { }
+
+        public override void tick()
+        {}
+    }
+
+    class ValveEntity : Entity
+    {
+        bool active = true;
+        int amount;
+        Sprite sprite;
+
+        public ValveEntity(Sprite s, int amount, World w, int x, int y) : base(w,x,y)
+        {
+            sprite = s;
+            this.amount = amount;
+        }
+
+        public override Sprite getSprite()
+        {
+            return sprite;
+        }
+
+        public override bool interact(Player p)
+        {
+            if(active)
+            {
+                active = false;
+                WorldState.drainFrames += amount;
+
+            } else
+            {
+                p.pushState(new TextBox(p.getState(), p, "The valve is doing all it can!"));
+            }
+            return true;
+        }
+
+        public override void onStepOn(Player p)
+        {}
 
         public override void tick()
         {}

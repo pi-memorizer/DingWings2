@@ -38,6 +38,7 @@ namespace GameSystem
             SoundSystem.load("door", "wav");
             SoundSystem.load("error", "wav");
             SoundSystem.load("footsteps","wav");
+            SoundSystem.setVolume("footsteps", .3);
             SoundSystem.load("lever", "wav");
             SoundSystem.load("stairs", "wav");
             SoundSystem.load("water", "wav");

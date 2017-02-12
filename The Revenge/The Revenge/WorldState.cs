@@ -41,7 +41,7 @@ namespace GameSystem
             worldinit();
 
             Player.maleSheet = new Bitmap("guy.png");
-            Player.femaleSheet = new Bitmap("female.png");
+            Player.femaleSheet = new Bitmap("guy2.png");
             Player.male = new Sprite[12];
             for (int i = 0; i < 12; i++)
             {
@@ -348,16 +348,23 @@ namespace GameSystem
             }
         }
 
+        static int stairCount = 0;
 
         public override void run(Player p)
         {
             startMenu();
+            int waterPixel = getWaterPixel();
             if (p.xOffset == 0 && p.yOffset == 0 && p.wait == 0) //if the player is ready to move again
             {
                 {
                     Block b = (Block)p.world.getTileAt(p.x, p.y);
                     if(b==Block.UpStairs)
                     {
+                        if (stairCount < 3)
+                        {
+                            SoundSystem.play("stairs");
+                            stairCount++;
+                        }
                         p.level--;
                         p.x--;
                         p.xOffset = 15;
@@ -365,6 +372,11 @@ namespace GameSystem
                     }
                     if (b == Block.DownStairs)
                     {
+                        if (stairCount < 3)
+                        {
+                            SoundSystem.play("stairs");
+                            stairCount++;
+                        }
                         p.level++;
                         p.x--;
                         p.xOffset = 15;
@@ -379,6 +391,11 @@ namespace GameSystem
                         {
                             p.x--;
                             p.xOffset = 16-WALK_SPEED;
+                            if (waterPixel == 0) SoundSystem.play("footsteps");
+                            else if (waterPixel < 16)
+                            {
+                                SoundSystem.play("water");
+                            }
                         }
                     }
                     else
@@ -396,6 +413,11 @@ namespace GameSystem
                         {
                             p.x++;
                             p.xOffset = WALK_SPEED-16;
+                            if (waterPixel == 0) SoundSystem.play("footsteps");
+                            else if (waterPixel < 16)
+                            {
+                                SoundSystem.play("water");
+                            }
                         }
                     }
                     else
@@ -413,6 +435,11 @@ namespace GameSystem
                         {
                             p.y--;
                             p.yOffset = 16-WALK_SPEED;
+                            if (waterPixel == 0) SoundSystem.play("footsteps");
+                            else if (waterPixel < 16)
+                            {
+                                SoundSystem.play("water");
+                            }
                         }
                     }
                     else
@@ -430,6 +457,10 @@ namespace GameSystem
                         {
                             p.y++;
                             p.yOffset = WALK_SPEED-16;
+                            if (waterPixel == 0) SoundSystem.play("footsteps"); else if(waterPixel<16)
+                            {
+                                SoundSystem.play("water");
+                            }
                         }
                     }
                     else
