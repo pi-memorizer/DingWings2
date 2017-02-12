@@ -62,6 +62,72 @@ namespace GameSystem
 
         void init()
         {
+            entities.Add(new WorldItem(WorldState.tileSprites[(int)Block.HammerHandle], Player.Item.HammerHandle, "Hammer Handle", this, 5, 0));
+            entities.Add(new WorldItem(WorldState.tileSprites[(int)Block.HammerHead], Player.Item.HammerHead, "Hammer Head", this, 20, 18));
+        }
+
+        public override void tick(Player p)
+        {
+
+        }
+    }
+
+    class Map3 : StaticWorld
+    {
+        public Map3(int id, int width, int height) : base(id, width, height)
+        {
+            init();
+        }
+
+        public Map3()
+        {
+            init();
+        }
+
+        void init()
+        {
+            DoorEntity[] doors =
+            {
+                new DoorEntity(false,this,8,13),
+                new DoorEntity(false,this,10,15),
+                new DoorEntity(false,this,12,13),
+                new DoorEntity(true,this,8,17),
+                new DoorEntity(false,this,6,19),
+                new DoorEntity(true,this,4,14),
+                new DoorEntity(true,this,1,19),
+                new DoorEntity(false,this,12,17),
+                new DoorEntity(false,this,14,19),
+                new DoorEntity(false,this,8,25),
+                new DoorEntity(true,this,3,30),
+                new DoorEntity(false,this,8,29),
+                new DoorEntity(true,this,2,23),
+                new DoorEntity(false,this,1,27),
+                new DoorEntity(true,this,12,27),
+                new DoorEntity(false,this,16,30),
+                new DoorEntity(false,this,18,23),
+                new DoorEntity(true,this,20,24),
+                new DoorEntity(true,this,20,17),
+                new DoorEntity(true,this,17,15),
+                new DoorEntity(false,this,26,23),
+                new DoorEntity(true,this,28,28),
+                new DoorEntity(true,this,20,28),
+            };
+            for (int i = 0; i < doors.Length; i++)
+                entities.Add(doors[i]);
+            DoorLever[] levers =
+            {
+                new DoorLever(new DoorEntity [] {doors[2-1],doors[4-1],doors[8 - 1],/*doors[18 - 1]*/ },this,10,13),
+                new DoorLever(new DoorEntity [] {doors[1 - 1],doors[3 - 1],doors[9 - 1],doors[12 - 1],doors[15 - 1],doors[16 - 1] },this,14,15),
+                new DoorLever(new DoorEntity [] {doors[10 - 1],doors[11 - 1],doors[23 - 1] },this,11,25),
+                new DoorLever(new DoorEntity [] {doors[5 - 1],doors[11 - 1],doors[14 - 1],doors[22 - 1] },this,5,28),
+                new DoorLever(new DoorEntity [] {doors[16 - 1] },this,1,16),
+                new DoorLever(new DoorEntity [] {doors[17 - 1],doors[18 - 1],doors[21 - 1],doors[23 - 1] },this,23,30),
+                new DoorLever(new DoorEntity [] {doors[20 - 1],doors[22 - 1] },this,22,21),
+            };
+            for(int i = 0; i < levers.Length; i++)
+            {
+                entities.Add(levers[i]);
+            }
         }
 
         public override void tick(Player p)

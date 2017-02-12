@@ -9,7 +9,7 @@ namespace GameSystem
 {
     class DeathState : MenuState
     {
-        static Sprite deathScreen = new Sprite("splashscreen.png");
+        static Sprite deathScreen = new Sprite("gameover.png");
         string message;
         int fade = 1;
         

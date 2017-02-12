@@ -12,8 +12,8 @@ namespace GameSystem
     {
         Air = 0, CreamWall, DuctTape, RabbitBed, HammerHead = 4, LabFloor, Valve,
         OldDoorRight = 16, BoringCarpet, KeyCard, Wrench, HammerHandle, LittleScienceFloor,
-        OldDoorLeft = 32, DeskSingle, DeskLeft, DeskRight,
-        OldDoorDown = 48, TableTopLeft, TableTopMiddle, TableTopRight, TableTopExtendsRight,
+        OldDoorLeft = 32, DeskSingle, DeskLeft, DeskRight, LeverDown = 37,
+        OldDoorDown = 48, TableTopLeft, TableTopMiddle, TableTopRight, TableTopExtendsRight, LeverUp,
         OldDoorUp = 64, TableLeftMiddle, TableMiddle, TableRightMiddle, TableMiddleColumn, TableTopColumn,
         DownStairs = 80, TableBottomLeft, TableBottomMiddle, TableBottomRight, TableBottomExtendsRight, TableBottomColumn,
         UpStairs = 96, TableLeftRow, TableMiddleRow, TableRightRow, TableSingle,

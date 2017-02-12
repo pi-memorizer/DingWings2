@@ -22,7 +22,7 @@ namespace GameSystem
         private GameState state; //the current state
         private Stack<GameState> stateStack = new Stack<GameState>(); //the stack of states, for state layering
         public int x = 15, y = 31, xOffset = 0, yOffset = 0; //position values
-        public int worldID = 0; //the id of the world that the player is in
+        public int worldID = 3; //the id of the world that the player is in
         public int wait = 0; //how many frames the player has waited since turning
         public int dir = 3; //the direction the player is facing, 0=right,1=up,2=left,3=down
         public bool isMale = true;
@@ -39,7 +39,7 @@ namespace GameSystem
 
         public enum Item
         {
-            DuctTape, KeyCard, Wrench
+            DuctTape, KeyCard, Wrench, HammerHandle, HammerHead, Knob
         };
 
         public World world
