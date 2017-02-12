@@ -33,7 +33,7 @@ namespace GameSystem
         public int breath = MAX_BREATH;
 
         public static int NUM_ITEMS = 64;
-        public bool[] items = new bool[NUM_ITEMS];
+        public static bool[] items = new bool[NUM_ITEMS];
 
         public int level = 0;
 

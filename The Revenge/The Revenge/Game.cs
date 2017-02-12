@@ -14,7 +14,7 @@ namespace GameSystem
         public static Random rand = new Random(); //global random
         public static long frames = 0; //what frame the game is in, useful for animated sprites
         public static string[] args;
-        static bool waterRising = false;
+        public static bool waterRising = false;
 
         static Game()
         {
@@ -42,6 +42,7 @@ namespace GameSystem
             SoundSystem.load("lever", "wav");
             SoundSystem.load("stairs", "wav");
             SoundSystem.load("water", "wav");
+            SoundSystem.setVolume("water", .3);
         }
 
         public static Player getPlayer(int id)
@@ -140,7 +141,7 @@ namespace GameSystem
                         if (WorldState.waterLevel == 0)
                         {
                             lose(new string[] { "Inundation complete. Might want to stop that next time." });
-                            WorldState.waterLevel = 2 * WorldState.WATER_SPEED;
+                            WorldState.waterLevel = WorldState.WATER_SPEED;
                         }
                         else if (WorldState.waterLevel % WorldState.WATER_SPEED == 0)
                         {
@@ -154,14 +155,9 @@ namespace GameSystem
                     }
                     else
                     {
-                        WorldState.waterLevel--;
+                        WorldState.waterLevel++;
                         WorldState.drainFrames--;
                     }
-                }
-                else
-                {
-                    for (int i = 0; i < p.Length; i++)
-                        if (p[i].level == 1) waterRising = true;
                 }
                 frames++;
                 List<World> tickedWorlds = new List<World>(); //worlds in this list have already ticked, needed so that they don't double up

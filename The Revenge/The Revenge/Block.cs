@@ -31,13 +31,13 @@ namespace GameSystem
             Block[] b =
             {
                 Block.RabbitBed, Block.HammerHead, Block.LabFloor, Block.Valve,
-        Block.BoringCarpet, Block.KeyCard, Block.Wrench, Block.HammerHandle, Block.LittleScienceFloor, Block.Box,
+        Block.BoringCarpet, Block.KeyCard, Block.Wrench, Block.HammerHandle, Block.Box,
         Block.DeskSingle, Block.DeskLeft, Block.DeskRight, Block.LeverDown,
         Block.LeverUp,
         Block.DownStairs, Block.TableBottomLeft, Block.TableBottomMiddle, Block.TableBottomRight, Block.TableBottomExtendsRight, Block.TableBottomColumn,
         Block.UpStairs, Block.TableLeftRow, Block.TableMiddleRow, Block.TableRightRow, Block.TableSingle,
         Block.ChairLeft, Block.ChairDown, Block.ChairRight, Block.ChairUp, Block.ComputerOn, Block.ComputerOff, Block.ComputerDesk, Block.ComputerBack, Block.BigScience, Block.LittleScience,
-        Block.DoorSide, Block.PottedPlant,
+        Block.DoorLeft, Block.DoorRight, Block.PottedPlant,
             };
             for (int i = 0; i < b.Length; i++)
                 setTrue(b[i]);

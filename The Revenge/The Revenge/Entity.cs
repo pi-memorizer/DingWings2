@@ -182,7 +182,7 @@ namespace GameSystem
 
         public override bool interact(Player p)
         {
-            p.items[(int)item] = true;
+            Player.items[(int)item] = true;
             remove = true;
             p.pushState(new TextBox(p.getState(), p, "You got the " + name + "!"));
             return true;
@@ -227,7 +227,7 @@ namespace GameSystem
     class EventEntity : Entity
     {
         Sprite sprite;
-        string message;
+        public string message;
         GameEvent e;
 
         public EventEntity(Sprite s, string message, GameEvent e, World w, int x, int y) : base(w,x,y)

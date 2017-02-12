@@ -14,8 +14,8 @@ namespace GameSystem
         public static Dictionary<int, World> worlds = null;
         public static int numWorlds = 1;
         public static string worldName = "";
-        public static int WATER_SPEED = 400;
-        public static int waterLevel = 2 * WATER_SPEED;
+        public static int WATER_SPEED = 60*150;
+        public static int waterLevel = WATER_SPEED;
         const int WAIT = 3; //amount of frames to wait before moving after changing direction
         public int WALK_SPEED = 2; //how many pixels the player moves per frame
         static Sprite[] waterSprites, waterLevelSprites;
@@ -27,6 +27,7 @@ namespace GameSystem
 
         public WorldState(Player player) : base(player)
         {
+            if (player.id == 2) player.isMale = false;
         }
 
         static WorldState()
@@ -365,9 +366,12 @@ namespace GameSystem
                             SoundSystem.play("stairs");
                             stairCount++;
                         }
+                        if (p.worldID == 1) p.y--;
+                        p.dir = 2;
                         p.level--;
                         p.x--;
-                        p.xOffset = 15;
+                        p.xOffset = 16-WALK_SPEED;
+                        p.worldID--;
                         return;
                     }
                     if (b == Block.DownStairs)
@@ -379,7 +383,10 @@ namespace GameSystem
                         }
                         p.level++;
                         p.x--;
-                        p.xOffset = 15;
+                        if (p.worldID == 0) p.y++;
+                        p.xOffset = 16-WALK_SPEED;
+                        p.dir = 2;
+                        p.worldID++;
                         return;
                     }
                 }
@@ -491,8 +498,10 @@ namespace GameSystem
                 //slides the player into the grid, will need to be modified if we want to stray from a grid based system
                 if (p.xOffset > 0) p.xOffset-=WALK_SPEED;
                 if (p.xOffset < 0) p.xOffset+=WALK_SPEED;
+                if (Math.Abs(p.xOffset) < WALK_SPEED) p.xOffset = 0;
                 if (p.yOffset > 0) p.yOffset-=WALK_SPEED;
                 if (p.yOffset < 0) p.yOffset+=WALK_SPEED;
+                if (Math.Abs(p.yOffset) < WALK_SPEED) p.yOffset = 0;
                 if (p.wait > 0) p.wait--;
             }
             if (p.xOffset == 0 && p.yOffset == 0 && p.getState() == this)
