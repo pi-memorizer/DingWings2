@@ -152,7 +152,7 @@ namespace GameSystem
         {
             List<DrawUnit>[] layers = new List<DrawUnit>[19];
             int waterPixel = getWaterPixel();
-            if (p.id == 1)
+            if (p.id == 1 && !(this is EndAnimation))
             {
                 if(p.breath<Player.MAX_BREATH/2)
                 {

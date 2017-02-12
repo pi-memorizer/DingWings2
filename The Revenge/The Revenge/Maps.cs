@@ -494,7 +494,7 @@ namespace GameSystem
 
         public override void tick(Player p)
         {
-            if (p.y == 6 && (p.x == 16 || p.x == 17)) p.setState(new EndAnimation(p));
+            if (p.y == 6 && (p.x == 16 || p.x == 17)&&!(p.getState() is EndState)) p.setState(new EndAnimation(p));
         }
     }
 
@@ -507,18 +507,21 @@ namespace GameSystem
         public EndAnimation(Player player) : base(player)
         {
             buns = new MurderBunny(p.world, 17, 3);
+            p.world.entities.Add(buns);
         }
 
+        static SolidBrush sb = new SolidBrush(Color.FromArgb(128, Color.RosyBrown));
         public override void draw(Graphics g, Player p)
         {
             base.draw(g, p);
-            if(frames>=150)
+            if(frames>=140)
             {
                 if (frames >= 170)
-                    tbc.draw(g, 140, 128);
+                    tbc.draw(g, 60, 128);
                 else
-                    tbc.draw(g, 160 - (frames - 150), 128);
-                g.Clear(Color.FromArgb(128, Color.SaddleBrown));
+                    tbc.draw(g, 160 - 5*(frames - 150), 128);
+
+                g.FillRectangle(sb,0,0,160,144);
             }
         }
 
@@ -530,6 +533,7 @@ namespace GameSystem
 
             if (p.xOffset == 0 && p.x == 16)
             {
+                p.dir = 1;
                 if(p.y==3&&p.yOffset==0)
                 {
                     p.dir = 0;
@@ -546,10 +550,14 @@ namespace GameSystem
                     } else
                     if(frames>=150)
                     {
-                        SoundSystem.setBackgroundMusic("tbc");
-                    } else if(frames>=120)
+                        frames++;
+                    } else if(frames>=140)
                     {
                         buns.attack = true;
+                        frames++;
+                    } else if(frames==0)
+                    {
+                        SoundSystem.setBackgroundMusic("tbc");
                         frames++;
                     } else
                     {
@@ -559,15 +567,18 @@ namespace GameSystem
                 {
                     p.y--;
                     p.yOffset = 15;
+                    p.dir = 1;
                 } else
                 {
                     p.yOffset--;
+                    p.dir = 1;
                 }
             }
             else if (p.x == 17)
             {
                 p.x = 16;
                 p.xOffset = 15;
+                p.dir = 2;
             }
             else p.xOffset--;
         }

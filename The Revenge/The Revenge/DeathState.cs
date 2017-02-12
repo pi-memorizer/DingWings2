@@ -73,7 +73,7 @@ namespace GameSystem
         public override void draw(Graphics g, Player p)
         {
             deathScreen.draw(g, 0, 0);
-            SolidBrush sb = new SolidBrush(Color.FromArgb(254 - 2 * Math.Abs(fade), Color.DarkRed));
+            SolidBrush sb = new SolidBrush(Color.FromArgb(254 - 2 * Math.Abs(fade), Color.Red));
             g.FillRectangle(sb, 0, 0, 160, 144);
         }
 
