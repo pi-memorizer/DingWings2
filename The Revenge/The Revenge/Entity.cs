@@ -421,7 +421,6 @@ namespace GameSystem
                 if(s.ToLower()==choices[Map2.passId])
                 {
                     Map2.passId = -1;
-                    p.popState();
                     World w = p.world;
                     w.editing = true;
                     w.setBlockAt(12, 1, 0);
@@ -431,6 +430,7 @@ namespace GameSystem
                     w.entityAt(12, 2).forceRemove();
                     SoundSystem.play("door");
                 }
+                p.popState();
             }
         }
     }

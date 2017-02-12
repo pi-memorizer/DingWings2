@@ -50,7 +50,7 @@ namespace GameSystem
         void note(Player p, Entity e)
         {
             p.pushState(new TextBox(p.getState(), p, "This note will self destruct in approximately 4 to 6 weeks"));
-            p.pushState(new TextBox(p.getState(), p, "Agent 842, because you missed the debriefing, we had Peter Warren drop off this note of instruction for you. What we need you to retrieve is in the vault on the lowest level. All the lower levels are flooded, so you'll need to find a way to deal with that. The main pipe for the building might be a good place to start. If you require Agent 794 to assist you, press any Player 2 key. Good luck"));
+            p.pushState(new TextBox(p.getState(), p, "Agent 842, because you missed the debriefing, we had Peter Warren drop off this note of instruction for you. What we need you to retrieve is in the vault on the lowest level. All the lower levels are flooded, so you'll need to find a way to deal with that. The main pipe for the building might be a good place to start. If you require Agent 794 to assist you, press any Player 2 key. Good luck."));
             e.forceRemove();
         }
 
@@ -370,6 +370,7 @@ namespace GameSystem
             entities.Add(new EventEntity(WorldState.tileSprites[0], "", computer, this, 12, 1));
             entities.Add(new EventEntity(WorldState.tileSprites[0], "", computer, this, 12, 2));
             entities.Add(new EventEntity(WorldState.tileSprites[7], "", mainValve, this, 18, 7));
+            entities.Add(new MessageEntity(WorldState.tileSprites[27], "password1", this, 27, 0));
         }
 
         void computer(Player p, Entity e)

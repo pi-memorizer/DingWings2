@@ -11,7 +11,7 @@ namespace GameSystem
     {
         public static Player[] players = new Player[0]; //array of all players in the game
         public static int KEY_DELAY = 10; //for things that have timed keys, how fast they can respond
-        public static Random rand = new Random(); //global random
+        public static Random rand = new Random(DateTime.Now.Millisecond); //global random
         public static long frames = 0; //what frame the game is in, useful for animated sprites
         public static string[] args;
         public static bool waterRising = false;
