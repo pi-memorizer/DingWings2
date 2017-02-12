@@ -32,6 +32,15 @@ namespace GameSystem
             SoundSystem.setLoop("dracula");
             SoundSystem.load("main", "wav");
             SoundSystem.setLoop("main");
+            SoundSystem.load("eeyore", "wav");
+            SoundSystem.setLoop("eeyore");
+            SoundSystem.load("box move", "wav");
+            SoundSystem.load("door", "wav");
+            SoundSystem.load("error", "wav");
+            SoundSystem.load("footsteps","wav");
+            SoundSystem.load("lever", "wav");
+            SoundSystem.load("stairs", "wav");
+            SoundSystem.load("water", "wav");
         }
 
         public static Player getPlayer(int id)

@@ -27,7 +27,6 @@ namespace GameSystem
 
         public WorldState(Player player) : base(player)
         {
-            if (player.id == 1) SoundSystem.setBackgroundMusic("beige");
         }
 
         static WorldState()
@@ -144,6 +143,27 @@ namespace GameSystem
         {
             List<DrawUnit>[] layers = new List<DrawUnit>[19];
             int waterPixel = getWaterPixel();
+            if (p.id == 1)
+            {
+                if(p.breath<Player.MAX_BREATH/2)
+                {
+                    SoundSystem.setBackgroundMusic("ohShiitakeMushrooms");
+                } else if (waterPixel > 12)
+                {
+                    SoundSystem.setBackgroundMusic("emergency2");
+                } else
+                {
+                    if (p.worldID == 0)
+                        SoundSystem.setBackgroundMusic("beige");
+                    else if (p.worldID == 1)
+                        SoundSystem.setBackgroundMusic("dracula");
+                    else if (p.worldID == 2)
+                        SoundSystem.setBackgroundMusic("creepyMusic");
+                    else if (p.worldID == 3)
+                        SoundSystem.setBackgroundMusic("eeyore");
+                }
+            }
+
             for(int i = 0; i < 19; i++)
             {
                 layers[i] = new List<DrawUnit>();

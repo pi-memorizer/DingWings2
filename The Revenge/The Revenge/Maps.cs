@@ -36,10 +36,16 @@ namespace GameSystem
                 p.world.editing = false;
                 e.forceRemove();
                 p.pushState(new TextBox(p.getState(), p, "The keycard opened the door!"));
+                SoundSystem.play("door");
             } else
             {
                 p.pushState(new TextBox(p.getState(), p, "This door is locked."));
             }
+        }
+
+        public static void scienceMachine(Player p, Entity e)
+        {
+            SoundSystem.play("error");
         }
 
         public override void tick(Player p)

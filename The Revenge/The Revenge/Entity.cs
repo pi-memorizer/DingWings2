@@ -113,24 +113,36 @@ namespace GameSystem
             {
                 if(world.getBlockAt(x,y)==0&&world.getTileAt(x,y)!=0)
                 {
-                    switch (p.dir)
+                    WorldState w = p.getState() as WorldState;
+                    if(w==null)
                     {
-                        case 0:
-                            this.x++;
-                            xOffset = -15;
-                            break;
-                        case 1:
-                            this.y--;
-                            yOffset = 15;
-                            break;
-                        case 2:
-                            this.x--;
-                            xOffset = 15;
-                            break;
-                        case 3:
-                            this.y++;
-                            yOffset = -15;
-                            break;
+                        return;
+                    }
+                    if (w.getWaterPixel() > 6)
+                    {
+                        switch (p.dir)
+                        {
+                            case 0:
+                                this.x++;
+                                xOffset = -15;
+                                break;
+                            case 1:
+                                this.y--;
+                                yOffset = 15;
+                                break;
+                            case 2:
+                                this.x--;
+                                xOffset = 15;
+                                break;
+                            case 3:
+                                this.y++;
+                                yOffset = -15;
+                                break;
+                        }
+                        SoundSystem.play("box move");
+                    } else
+                    {
+                        p.pushState(new TextBox(w, p, "A large box. You wonder if it would float.");
                     }
                 }
             }
@@ -274,6 +286,7 @@ namespace GameSystem
                     d.open = !d.open;
                 }
             }
+            SoundSystem.play("door");
             return true;
         }
 
