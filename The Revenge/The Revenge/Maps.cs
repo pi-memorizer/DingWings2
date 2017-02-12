@@ -162,7 +162,7 @@ namespace GameSystem
             {
                 27,21,
                 7,11,
-                3,15,
+                3,14,
                 17,18,
                 17,12,
                 23,13,
@@ -494,7 +494,70 @@ namespace GameSystem
 
         public override void tick(Player p)
         {
+            if (p.y == 6 && (p.x == 16 || p.x == 17)) p.setState(new EndAnimation(p));
+        }
+    }
 
+    class EndAnimation : WorldState
+    {
+        MurderBunny buns;
+        int frames = 0;
+
+        public EndAnimation(Player player) : base(player)
+        {
+            buns = new MurderBunny(p.world, 17, 3);
+        }
+
+        public override void run(Player p)
+        {
+            p.world.editing = true;
+            p.world.setBlockAt(17, 3, 0);
+            p.world.editing = false;
+
+            if (p.xOffset == 0 && p.x == 16)
+            {
+                if(p.yOffset!=-100)
+                {
+                    p.yOffset--;
+                }
+            }
+            else if (p.x == 17)
+            {
+                p.x = 16;
+                p.xOffset = 15;
+            }
+            else p.xOffset--;
+        }
+    }
+
+    class MurderBunny : Entity
+    {
+        public MurderBunny(World w, int x, int y) : base(w,x,y)
+        {
+
+        }
+
+        bool attack = false;
+        Sprite attackSprite = WorldState.tileSprites[279], normalSprite = WorldState.tileSprites[127];
+        public override Sprite getSprite()
+        {
+            if (attack)
+                return attackSprite;
+            else
+                return normalSprite;
+        }
+
+        public override bool interact(Player p)
+        {
+            return false;
+        }
+
+        public override void onStepOn(Player p)
+        {
+        }
+
+        public override void tick()
+        {
         }
     }
 }

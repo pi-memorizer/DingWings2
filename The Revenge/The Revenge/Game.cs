@@ -146,10 +146,13 @@ namespace GameSystem
                         else if (WorldState.waterLevel % WorldState.WATER_SPEED == 0)
                         {
                             int level = WorldState.waterLevel / WorldState.WATER_SPEED;
-                            WorldState.pipeUsesLeft[level]--;
-                            if (WorldState.pipeUsesLeft[level] == 0)
+                            if (level >= 0 && level < 4)
                             {
-                                lose(new string[] { "There was no hope for floor " + (level + 1) + "'s pipe any longer." });
+                                WorldState.pipeUsesLeft[level]--;
+                                if (WorldState.pipeUsesLeft[level] == 0)
+                                {
+                                    lose(new string[] { "There was no hope for floor " + (level + 1) + "'s pipe any longer." });
+                                }
                             }
                         }
                     }
