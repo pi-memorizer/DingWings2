@@ -190,7 +190,7 @@ namespace GameSystem
             entities.Add(new MessageEntity(WorldState.tileSprites[0], "It says 'Nick has told his dad joke for the day.' You don't know what that means.", this, 8, 11));
             entities.Add(new EventEntity(WorldState.tileSprites[0], "", boardedDoor, this, 28, 5));
             entities.Add(new EventEntity(WorldState.tileSprites[0], "", boardedDoor, this, 28, 6));
-            entities.Add(new EventEntity(WorldState.tileSprites[7], "The twist knob for the valve seems to have fallen through a hole in the floor.", mainValve, this, 20, 7));
+            entities.Add(new EventEntity(WorldState.tileSprites[8], "The twist knob for the valve seems to have fallen through a hole in the floor.", mainValve, this, 20, 7));
         }
 
         void boardedDoor(Player p, Entity e)
@@ -355,9 +355,9 @@ namespace GameSystem
             for (int i = 0; i < coords.Length; i += 2)
                 entities.Add(new Pushable(WorldState.tileSprites[(int)Block.Box], this, coords[i], coords[i + 1]));
             entities.Add(new WorldItem(WorldState.tileSprites[6], Player.Item.Knob, "Knob for the main pipe upstairs", this, 22, 7));
-            entities.Add(new ValveEntity(WorldState.tileSprites[9], 20 * 60, this, 28, 8));
-            entities.Add(new ValveEntity(WorldState.tileSprites[8], 20 * 60, this, 2, 8));
-            entities.Add(new ValveEntity(WorldState.tileSprites[9], 20 * 60, this, 17, 19));
+            entities.Add(new ValveEntity(WorldState.tileSprites[44], 20 * 60, this, 28, 8));
+            entities.Add(new ValveEntity(WorldState.tileSprites[44], 20 * 60, this, 2, 8));
+            entities.Add(new ValveEntity(WorldState.tileSprites[44], 20 * 60, this, 17, 19));
             string[] choices =
             {
                 "what's on the wall in the southeastern corner room.",
@@ -369,7 +369,7 @@ namespace GameSystem
             entities.Add(new MessageEntity(WorldState.tileSprites[26], "'Poster'", this, 27, 25));
             entities.Add(new EventEntity(WorldState.tileSprites[0], "", computer, this, 12, 1));
             entities.Add(new EventEntity(WorldState.tileSprites[0], "", computer, this, 12, 2));
-            entities.Add(new EventEntity(WorldState.tileSprites[7], "", mainValve, this, 18, 7));
+            entities.Add(new EventEntity(WorldState.tileSprites[8], "", mainValve, this, 18, 7));
             entities.Add(new MessageEntity(WorldState.tileSprites[27], "password1", this, 27, 0));
         }
 
@@ -454,9 +454,9 @@ namespace GameSystem
             {
                 entities.Add(levers[i]);
             }
-            entities.Add(new EventEntity(WorldState.tileSprites[7], "", lastValve, this, 20, 7));
-            entities.Add(new ValveEntity(WorldState.tileSprites[8], 20 * 60, this, 3, 19));
-            entities.Add(new ValveEntity(WorldState.tileSprites[8], 20 * 60, this, 5, 23));
+            entities.Add(new EventEntity(WorldState.tileSprites[8], "", lastValve, this, 20, 7));
+            entities.Add(new ValveEntity(WorldState.tileSprites[44], 20 * 60, this, 3, 19));
+            entities.Add(new ValveEntity(WorldState.tileSprites[44], 20 * 60, this, 5, 23));
             entities.Add(new ValveEntity(WorldState.tileSprites[25], 20 * 60, this, 15, 16));
             entities.Add(new ValveEntity(WorldState.tileSprites[25], 20 * 60, this, 23, 20));
             entities.Add(new EventEntity(WorldState.tileSprites[0], "", lastDoor, this, 14, 8));

@@ -33,7 +33,7 @@ namespace GameSystem
             int[] b =
             {
                 49,50,51,52,53,37,60,61,
-                65,66,67,68,69,64+16+7
+                65,66,67,68,69,64+16+7,76,77
             };
             for (int i = 0; i < b.Length; i++)
                 setFalse((Block)b[i]);
@@ -46,7 +46,7 @@ namespace GameSystem
             for(int i = 512; i < 512+52; i++)
             {
                 int x = (i-512) % 13;
-                if (x <= 4) setTrue((Block)i);
+                if (x < 4) setTrue((Block)i);
                 else if (x == 12 || x == 6 || x == 7) setTrue((Block)i);
                 else setFalse((Block)i);
             }
